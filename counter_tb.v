@@ -48,6 +48,4 @@ module counter_tb;
         $display(out);
      end
 
-   always @(posedge clk) count = count+1;
-
 endmodule
