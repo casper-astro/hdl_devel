@@ -5,7 +5,6 @@
 module counter_tb;
 
    // local parameters
-   localparam MYHDL = `ifdef MYHDL `MYHDL; `else 0; `endif
    localparam CLK_COUNT = 0;
    localparam DATA_WIDTH = 8;
 
@@ -32,44 +31,37 @@ module counter_tb;
    defparam dut.COUNT_TO     = `ifdef COUNT_TO     `COUNT_TO;     `else 255;          `endif
    defparam dut.STEP         = `ifdef STEP         `STEP;         `else 1;            `endif
 
+`ifdef MYHDL
+      
    // define what myhdl takes over
-   // only if we're running myhdl
-   generate
+   // only if we're running myhdl   
+      initial begin
+	 $from_myhdl(clk, en, rst);
+	 $to_myhdl(out);
+      end
 
-      if (MYHDL==1)
+`else
+
+      // initialize
+      initial
 	begin
-	   initial begin
-	      $from_myhdl(clk, en, rst);
-	      $to_myhdl(out);
-	   end
+	   clk = 0;
+	   en = 1;
+	   rst = 0;
 	end
 
-      else
+      // simulate the clock
+      always #1
 	begin
+	   clk = ~clk;
+	end
 
-	   // initialize
-	   initial
-	     begin
-		clk = 0;
-		en = 1;
-		rst = 0;
-	     end
-
-	   // simulate the clock
-	   always #1
-	     begin
-		clk = ~clk;
-	     end
-
-	   // print the output
-	   always @(posedge clk) $display(out);
+      // print the output
+      always @(posedge clk) $display(out);
 	   
-	   // finish after 100 clocks
-	   initial #200 $finish;
+      // finish after 100 clocks
+      initial #200 $finish;
 
-	end
-
-   endgenerate
-
+`endif
    
 endmodule

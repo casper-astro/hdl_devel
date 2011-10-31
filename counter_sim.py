@@ -4,7 +4,7 @@ from myhdl import *
 
 
 cmd = 'iverilog -o counter_tb ' + \
-    '-DMYHDL=1 ' + \
+    '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DDATA_WIDTH={data_width} ' + \
     '-DCOUNT_FROM={count_from} ' + \
