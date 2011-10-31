@@ -5,6 +5,7 @@
 module counter_tb;
 
    // local parameters
+   localparam MYHDL = `ifdef MYHDL `MYHDL; `else 0; `endif
    localparam CLK_COUNT = 0;
    localparam DATA_WIDTH = 8;
 
@@ -12,40 +13,63 @@ module counter_tb;
    reg clk;
    reg en;
    reg rst;
-   reg count;
    
    // declare wires
    wire [DATA_WIDTH-1:0] out;
 
-   // counter
-   counter
-     #(
-       .ARCHITECTURE("BEHAVIORAL"),
-       .DATA_WIDTH(DATA_WIDTH),
-       .COUNT_FROM(20),
-       .COUNT_TO(2**DATA_WIDTH),
-       .STEP(1)
-       ) counter_inst
-       (
-	.clk(clk), 
-	.en(en), 
-	.rst(rst), 
-	.out(out)
-	);
+   // instance, "(d)esign (u)nder (t)est"
+   counter dut (
+		.clk(clk), 
+		.en(en), 
+		.rst(rst), 
+		.out(out)
+		);
 
-   // initial
-   initial
-     begin
-	clk = 0;
-	en = 1;
-	rst = 0;
-        count = 0;
-     end
+   // define all of its parameters
+   defparam dut.ARCHITECTURE = `ifdef ARCHITECTURE `ARCHITECTURE; `else "BEHAVIORAL"; `endif
+   defparam dut.DATA_WIDTH   = `ifdef DATA_WIDTH   `DATA_WIDTH;   `else 8;            `endif
+   defparam dut.COUNT_FROM   = `ifdef COUNT_FROM   `COUNT_FROM;   `else 0;            `endif
+   defparam dut.COUNT_TO     = `ifdef COUNT_TO     `COUNT_TO;     `else 255;          `endif
+   defparam dut.STEP         = `ifdef STEP         `STEP;         `else 1;            `endif
 
-   always #10 
-     begin
-	clk = ~clk;
-        $display(out);
-     end
+   // define what myhdl takes over
+   // only if we're running myhdl
+   generate
 
+      if (MYHDL==1)
+	begin
+	   initial begin
+	      $from_myhdl(clk, en, rst);
+	      $to_myhdl(out);
+	   end
+	end
+
+      else
+	begin
+
+	   // initialize
+	   initial
+	     begin
+		clk = 0;
+		en = 1;
+		rst = 0;
+	     end
+
+	   // simulate the clock
+	   always #1
+	     begin
+		clk = ~clk;
+	     end
+
+	   // print the output
+	   always @(posedge clk) $display(out);
+	   
+	   // finish after 100 clocks
+	   initial #200 $finish;
+
+	end
+
+   endgenerate
+
+   
 endmodule
