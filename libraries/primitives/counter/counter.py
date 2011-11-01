@@ -51,5 +51,6 @@ def convert():
   toVerilog(counter, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
 
 
-convert()
+if __name__ == "__main__":
+   convert()
 

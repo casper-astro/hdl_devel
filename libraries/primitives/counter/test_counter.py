@@ -1,27 +1,34 @@
-import shlex, subprocess
+import os, shlex, subprocess
 from unittest import TestCase, main
 from myhdl import *
 
 
-cmd = 'iverilog -o counter_tb ' + \
+MOD_PATH = os.path.abspath(os.path.dirname(__file__))
+VPI_PATH = os.path.join(os.getenv('MYHDL'), 'cosimulation', 'icarus', 'myhdl.vpi')
+os.chdir(MOD_PATH)
+
+
+ICARUS_CMD = 'iverilog -o counter_tb ' + \
     '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DDATA_WIDTH={data_width} ' + \
     '-DCOUNT_FROM={count_from} ' + \
     '-DCOUNT_TO={count_to} ' + \
     '-DSTEP={step} ' + \
-    'counter_tb.v' 
+    'counter_tb.v'
 
 
 def counter(clk, en, rst, out, 
             architecture, data_width, count_from, count_to, step):
-    simcmd = cmd.format(architecture=architecture,
-                        data_width=data_width,
-                        count_from=count_from,
-                        count_to=count_to,
-                        step=step)
-    subprocess.Popen(shlex.split(simcmd))
-    return Cosimulation("vvp -m ./myhdl.vpi counter_tb", clk=clk, en=en, rst=rst, out=out)
+    simcmd = ICARUS_CMD.format(architecture=architecture,
+                               data_width=data_width,
+                               count_from=count_from,
+                               count_to=count_to,
+                               step=step)
+    proc = subprocess.Popen(shlex.split(simcmd))
+    proc.wait() # wait for Icarus compiler to finish
+    return Cosimulation("vvp -m %s counter_tb" % VPI_PATH, 
+                        clk=clk, en=en, rst=rst, out=out)
 
 
 class TestCounterProperties(TestCase):
@@ -84,4 +91,5 @@ class TestCounterProperties(TestCase):
         self.assertEqual(output, [0]+range(count_to+1))
 
 
-main()
+if __name__ == "__main__":
+    main()
