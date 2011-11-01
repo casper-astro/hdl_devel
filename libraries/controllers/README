@@ -1,0 +1,1 @@
+This directory contains the HDL peripheral controllers and the respective python wrappers enabling them to be included in the MyHDL based toolflow.
