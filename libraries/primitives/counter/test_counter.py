@@ -29,7 +29,8 @@ def counter(clk, en, rst, out,
                                count_to=count_to,
                                step=step)
     proc = subprocess.Popen(shlex.split(simcmd))
-    proc.wait() # wait for Icarus compiler to finish
+    if proc.wait(): # wait for Icarus compiler to finish
+        raise RuntimeError('Icarus compile failed (see above)!')
     return Cosimulation(VVP_CMD.format(mod_path=MOD_PATH, vpi_path=VPI_PATH), 
                         clk=clk, en=en, rst=rst, out=out)
 
