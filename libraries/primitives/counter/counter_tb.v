@@ -1,7 +1,5 @@
 // counter test-bench script
 
-`include "counter.v"
-
 module counter_tb;
 
    // local parameters

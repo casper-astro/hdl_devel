@@ -3,51 +3,66 @@ from unittest import TestCase, main
 from myhdl import *
 
 
-MOD_PATH = os.path.abspath(os.path.dirname(__file__))
 VPI_PATH = os.path.join(os.getenv('MYHDL'), 'cosimulation', 'icarus', 'myhdl.vpi')
-os.chdir(MOD_PATH)
+MOD_PATH = os.path.abspath(os.path.dirname(__file__))
 
-
-ICARUS_CMD = 'iverilog -o counter_tb ' + \
+ICARUS_CMD = 'iverilog ' + \
+    '-o {mod_path}/counter_tb ' + \
     '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DDATA_WIDTH={data_width} ' + \
     '-DCOUNT_FROM={count_from} ' + \
     '-DCOUNT_TO={count_to} ' + \
     '-DSTEP={step} ' + \
-    'counter_tb.v'
+    '{mod_path}/counter_tb.v ' + \
+    '{mod_path}/counter.v'
+
+VVP_CMD = "vvp -m {vpi_path} {mod_path}/counter_tb"
 
 
 def counter(clk, en, rst, out, 
             architecture, data_width, count_from, count_to, step):
-    simcmd = ICARUS_CMD.format(architecture=architecture,
+    simcmd = ICARUS_CMD.format(mod_path=MOD_PATH,
+                               architecture=architecture,
                                data_width=data_width,
                                count_from=count_from,
                                count_to=count_to,
                                step=step)
     proc = subprocess.Popen(shlex.split(simcmd))
     proc.wait() # wait for Icarus compiler to finish
-    return Cosimulation("vvp -m %s counter_tb" % VPI_PATH, 
+    return Cosimulation(VVP_CMD.format(mod_path=MOD_PATH, vpi_path=VPI_PATH), 
                         clk=clk, en=en, rst=rst, out=out)
 
 
 class TestCounterProperties(TestCase):
 
+    def setUp(self):
+        self.architecture = 'BEHAVIORAL'
+        self.data_width = 8
+        self.count_from = 0
+        self.count_to = 255
+        self.step = 1
+
+        self.clk = Signal(intbv(0))
+        self.en = Signal(intbv(0))
+        self.rst = Signal(intbv(0))
+        self.out = Signal(intbv(0))
+
+        self.dut = counter(self.clk, self.en, self.rst, self.out, 
+                           self.architecture, self.data_width, 
+                           self.count_from, self.count_to, self.step)
+
     def test_output(self):
         """ Check that the counter increments """
-        architecture = 'BEHAVIORAL'
-        data_width = 8
-        count_from = 0
-        count_to = 255
-        step = 1
+
         output = []
 
         def test(clk, en, rst, out, 
-                 architecture=architecture,
-                 data_width=data_width,
-                 count_from=count_from,
-                 count_to=count_to,
-                 step=step):
+                 architecture=self.architecture,
+                 data_width=self.data_width,
+                 count_from=self.count_from,
+                 count_to=self.count_to,
+                 step=self.step):
             
             # set initial values
             @instance
@@ -79,16 +94,13 @@ class TestCounterProperties(TestCase):
 
             return initial, drive_clk, monitor, stop_sim
 
-        clk = Signal(intbv(0))
-        en = Signal(intbv(0))
-        rst = Signal(intbv(0))
-        out = Signal(intbv(0))
-        dut = counter(clk, en, rst, out, 
-                      architecture, data_width, count_from, count_to, step)
-        check =  test(clk, en, rst, out)
-        sim = Simulation(dut, check)
+        check =  test(self.clk, self.en, self.rst, self.out)
+        sim = Simulation(self.dut, check)
         sim.run(quiet=True)
-        self.assertEqual(output, [0]+range(count_to+1))
+        self.assertEqual(output, [0]+range(self.count_to+1))
+
+    def tearDown(self):
+        os.remove('{mod_path}/counter_tb'.format(mod_path=MOD_PATH))
 
 
 if __name__ == "__main__":
