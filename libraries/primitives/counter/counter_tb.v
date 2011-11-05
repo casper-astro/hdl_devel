@@ -33,32 +33,32 @@ module counter_tb;
       
    // define what myhdl takes over
    // only if we're running myhdl   
-      initial begin
-	 $from_myhdl(clk, en, rst);
-	 $to_myhdl(out);
-      end
+   initial begin
+      $from_myhdl(clk, en, rst);
+      $to_myhdl(out);
+   end
 
 `else
 
-      // initialize
-      initial
-	begin
-	   clk = 0;
-	   en = 1;
-	   rst = 0;
-	end
+   // initialize
+   initial
+     begin
+	clk = 0;
+	en = 1;
+	rst = 0;
+     end
 
-      // simulate the clock
-      always #1
-	begin
-	   clk = ~clk;
-	end
+   // simulate the clock
+   always #1
+     begin
+	clk = ~clk;
+     end
 
-      // print the output
-      always @(posedge clk) $display(out);
-	   
-      // finish after 100 clocks
-      initial #200 $finish;
+   // print the output
+   always @(posedge clk) $display(out);
+   
+   // finish after 100 clocks
+   initial #200 $finish;
 
 `endif
    
