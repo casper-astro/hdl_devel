@@ -1,2 +1,2 @@
-from hdl import hdl
+from counter import counter
 from tb import tb
