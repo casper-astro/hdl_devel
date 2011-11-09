@@ -1,23 +1,25 @@
 import os, shlex, subprocess
+from pkg_resources import resource_filename
 from unittest import TestCase, main
 from myhdl import *
 
 
 VPI_PATH = os.path.join(os.getenv('MYHDL'), 'cosimulation', 'icarus', 'myhdl.vpi')
-MOD_PATH = os.path.abspath(os.path.dirname(__file__))
+MOD_PATH = resource_filename(__name__, '') + os.path.sep
+
 
 ICARUS_CMD = 'iverilog ' + \
-    '-o {mod_path}/counter_tb ' + \
+    '-o {mod_path}counter_tb ' + \
     '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DDATA_WIDTH={data_width} ' + \
     '-DCOUNT_FROM={count_from} ' + \
     '-DCOUNT_TO={count_to} ' + \
     '-DSTEP={step} ' + \
-    '{mod_path}/counter_tb.v ' + \
-    '{mod_path}/counter.v'
+    '{mod_path}counter_tb.v ' + \
+    '{mod_path}counter.v'
 
-VVP_CMD = "vvp -m {vpi_path} {mod_path}/counter_tb"
+VVP_CMD = "vvp -m {vpi_path} {mod_path}counter_tb"
 
 
 def counter(clk, en, rst, out, 
@@ -87,7 +89,7 @@ class TestCounterProperties(TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.remove('{mod_path}/counter_tb'.format(mod_path=MOD_PATH))
+        os.remove('{mod_path}counter_tb'.format(mod_path=MOD_PATH))
 
     def test_output_latency(self):
         """ Check output latency is within specification """
