@@ -3,8 +3,7 @@
 module counter_tb;
 
    // local parameters
-   localparam CLK_COUNT = 0;
-   localparam DATA_WIDTH = 8;
+   localparam LOCAL_DATA_WIDTH = `ifdef DATA_WIDTH `DATA_WIDTH `else 8 `endif;
 
    // declate regs
    reg clk;
@@ -12,7 +11,7 @@ module counter_tb;
    reg rst;
    
    // declare wires
-   wire [DATA_WIDTH-1:0] out;
+   wire [LOCAL_DATA_WIDTH-1:0] out;
 
    // instance, "(d)esign (u)nder (t)est"
    counter dut (
@@ -23,11 +22,11 @@ module counter_tb;
 		);
 
    // define all of its parameters
-   defparam dut.ARCHITECTURE = `ifdef ARCHITECTURE `ARCHITECTURE; `else "BEHAVIORAL"; `endif
-   defparam dut.DATA_WIDTH   = `ifdef DATA_WIDTH   `DATA_WIDTH;   `else 8;            `endif
-   defparam dut.COUNT_FROM   = `ifdef COUNT_FROM   `COUNT_FROM;   `else 0;            `endif
-   defparam dut.COUNT_TO     = `ifdef COUNT_TO     `COUNT_TO;     `else 255;          `endif
-   defparam dut.STEP         = `ifdef STEP         `STEP;         `else 1;            `endif
+   defparam dut.ARCHITECTURE = `ifdef ARCHITECTURE `ARCHITECTURE `else "BEHAVIORAL" `endif;
+   defparam dut.DATA_WIDTH   = `ifdef DATA_WIDTH   `DATA_WIDTH   `else 8            `endif;
+   defparam dut.COUNT_FROM   = `ifdef COUNT_FROM   `COUNT_FROM   `else 0            `endif;
+   defparam dut.COUNT_TO     = `ifdef COUNT_TO     `COUNT_TO     `else 255          `endif;
+   defparam dut.STEP         = `ifdef STEP         `STEP         `else 1            `endif;
 
 `ifdef MYHDL
       
