@@ -36,10 +36,14 @@ def counter(clk, en, rst, out,
                         clk=clk, en=en, rst=rst, out=out)
 
 
+def clean_up():
+    os.remove('{mod_path}counter_tb'.format(mod_path=MOD_PATH))
+
+
 def generate_cosim(architecture,
                    data_width,
                    count_from,
-                   count_to,
+                    count_to,
                    step,
                    runtime=1024):
 
@@ -61,7 +65,7 @@ def generate_cosim(architecture,
     output = []
 
     def test(clk, en, rst, out):
-        
+
         # set initial values
         @instance
         def initial():
@@ -93,11 +97,8 @@ def generate_cosim(architecture,
     sim = Simulation(dut, check)
     sim.run(quiet=True)
 
+    clean_up()
     return output
-
-
-def clean_up():
-    os.remove('{mod_path}counter_tb'.format(mod_path=MOD_PATH))
 
 
 def check_output_latency(latency):
