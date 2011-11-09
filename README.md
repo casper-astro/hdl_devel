@@ -32,7 +32,7 @@ build this file automatically (you will need Icarus installed):
 
 ```bash
 $ python scripts/build_vpi.py # generates myhdl.vpi
-$ export MYHDL=/path/to/hdl_devel/myhdl.py
+$ export MYHDL=/path/to/hdl_devel/myhdl.vpi
 ```
 
 Note: the co-simulating test-benches currently require the presence 
