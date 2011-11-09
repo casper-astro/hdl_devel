@@ -3,7 +3,7 @@ from pkg_resources import resource_filename
 from myhdl import *
 
 
-VPI_PATH = os.path.join(os.getenv('MYHDL'), 'cosimulation', 'icarus', 'myhdl.vpi')
+VPI_PATH = os.path.join(os.getenv('MYHDL'))
 MOD_PATH = resource_filename(__name__, '') + os.path.sep
 
 
