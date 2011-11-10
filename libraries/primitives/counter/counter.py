@@ -1,6 +1,6 @@
 from myhdl import *
 
-def counter_wrap(block_name,
+def counter(block_name,
             clk,
             en,
             rst,
@@ -29,7 +29,7 @@ def counter_wrap(block_name,
       .COUNT_FROM   (%(COUNT_FROM)s),
       .COUNT_TO     (%(COUNT_TO)s),
       .STEP         (%(STEP)s)
-   ) counter_wrap_%(block_name)s (
+   ) counter_%(block_name)s (
       .clk  (%(clk)s),
       .en   (%(en)s),
       .rst  (%(rst)s),
@@ -48,7 +48,7 @@ def convert():
 
   clk, en, rst, out = [Signal(bool(0)) for i in range(4)]
 
-  toVerilog(counter_wrap, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
+  toVerilog(counter, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
 
 
 if __name__ == "__main__":
