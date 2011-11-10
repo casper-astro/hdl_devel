@@ -37,7 +37,7 @@ module counter(
 	  always @(posedge clk)
 	    begin
 	       
-	       if (rst == 0 && out < COUNT_TO)
+	       if (rst == 0 && out <= COUNT_TO)
 		 begin
 		    
 		    if (en == 1)
