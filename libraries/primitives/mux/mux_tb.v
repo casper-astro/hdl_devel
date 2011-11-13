@@ -34,7 +34,7 @@ module mux_tb;
 
 `else
 
-   // initial
+   // initial setup of ports
    initial
      begin
 	select = 0;
@@ -42,12 +42,14 @@ module mux_tb;
 	$display(data_out);
      end
 
+   // loop with a delay of 10
    always #10
      begin
         select = select + 1;
         $display(data_out);
      end
    
+   // finish condition
    initial #100 $finish;
 
 `endif

@@ -24,7 +24,7 @@ def counter_wrapper(block_name,
    """
    counter 
    #(
-      .ARCHITECTURE (%(ARCHITECTURE)s),
+      .ARCHITECTURE ("%(ARCHITECTURE)s"),
       .DATA_WIDTH   (%(DATA_WIDTH)s),
       .COUNT_FROM   (%(COUNT_FROM)s),
       .COUNT_TO     (%(COUNT_TO)s),
