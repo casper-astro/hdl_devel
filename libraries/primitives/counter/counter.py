@@ -48,7 +48,7 @@ def convert():
 
   clk, en, rst, out = [Signal(bool(0)) for i in range(4)]
 
-  toVerilog(counteri_wrapper, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
+  toVerilog(counter_wrapper, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
 
 
 if __name__ == "__main__":
