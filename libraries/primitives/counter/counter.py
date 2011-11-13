@@ -1,6 +1,6 @@
 from myhdl import *
 
-def counter(block_name,
+def counter_wrapper(block_name,
             clk,
             en,
             rst,
@@ -48,7 +48,7 @@ def convert():
 
   clk, en, rst, out = [Signal(bool(0)) for i in range(4)]
 
-  toVerilog(counter, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
+  toVerilog(counteri_wrapper, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
 
 
 if __name__ == "__main__":
