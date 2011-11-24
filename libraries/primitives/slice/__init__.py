@@ -1,1 +1,1 @@
-from slice import slice
+import slice

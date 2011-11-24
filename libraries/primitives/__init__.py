@@ -1,2 +1,4 @@
-from counter import counter
-from mux import mux
+import counter
+import mux
+#import slice
+#import bit_shift

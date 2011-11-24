@@ -7,7 +7,7 @@ def slice_wrapper(block_name,
             ARCHITECTURE="BEHAVIORAL",
             INPUT_DATA_WIDTH=8,
             OFFSET_REL_TO_MSB=1,
-            OFFSET_1=0,
+            OFFSET_1=0,  # should be 2^(DATAWIDTH-1)
             OFFSET_2=7
             ):
 

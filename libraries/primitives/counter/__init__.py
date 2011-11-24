@@ -1,1 +1,1 @@
-from counter import counter
+import counter

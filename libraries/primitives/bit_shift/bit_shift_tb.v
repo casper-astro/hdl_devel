@@ -1,6 +1,6 @@
-// slice test-bench script
+// bit_shift test-bench script
 
-module slice_tb;
+module bit_shift_tb;
 
    // local parameters
    localparam LOCAL_DATA_WIDTH = `ifdef DATA_WIDTH `DATA_WIDTH `else 8 `endif;
@@ -11,10 +11,10 @@ module slice_tb;
    //reg data_out;
    
    // declare wires
-   wire [5-1:0] data_out;
+   wire [LOCAL_DATA_WIDTH-1:0] data_out;
 
    // instance, "(d)esign (u)nder (t)est"
-   slice dut (
+   bit_shift dut (
             .clk(clk), 
             .data_in(data_in), 
             .data_out(data_out)
@@ -22,10 +22,10 @@ module slice_tb;
 
    // define all of its parameters
    defparam dut.ARCHITECTURE      = `ifdef ARCHITECTURE      `ARCHITECTURE      `else "BEHAVIORAL" `endif;
-   defparam dut.INPUT_DATA_WIDTH  = `ifdef INPUT_DATA_WIDTH  `INPUT_DATA_WIDTH  `else 8            `endif;
-   defparam dut.OFFSET_REL_TO_MSB = `ifdef OFFSET_REL_TO_MSB `OFFSET_REL_TO_MSB `else 1            `endif;
-   defparam dut.OFFSET_1          = `ifdef OFFSET_1          `OFFSET_1          `else 1            `endif;
-   defparam dut.OFFSET_2          = `ifdef OFFSET_2          `OFFSET_2          `else 5            `endif;
+   defparam dut.DATA_WIDTH        = `ifdef DATA_WIDTH        `DATA_WIDTH        `else 8            `endif;
+   defparam dut.SHIFT_DIRECTION   = `ifdef SHIFT_DIRECTION   `SHIFT_DIRECTION   `else 0            `endif;
+   defparam dut.NUMBER_BITS       = `ifdef NUMBER_BITS       `NUMBER_BITS       `else 1            `endif;
+   defparam dut.WRAP              = `ifdef WRAP              `WRAP              `else 0            `endif;
 
 `ifdef MYHDL
       
@@ -41,21 +41,21 @@ module slice_tb;
    // initialize
    initial
      begin
-        clk = 0;
-	data_in = 8'b00001111;
+	clk = 0;
+	data_in = 16'b0101010101010101;
      end
 
    // simulate the clock
    always #1
      begin
-        clk = ~clk;
+	clk = ~clk;
      end
 
    // print the output
    always @(posedge clk) $display(data_out);
    
-   // finish after 100 clocks
-   initial #5 $finish;
+   // finish after 3 clocks
+   initial #3 $finish;
 
 `endif
    

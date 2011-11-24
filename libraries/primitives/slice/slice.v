@@ -13,7 +13,7 @@ module slice(clk,
    // Top level block parameters
    parameter ARCHITECTURE = "BEHAVIORAL";   // BEHAVIORAL, VIRTEX5, VIRTEX6
    parameter INPUT_DATA_WIDTH = 8;          // number of input bits
-   parameter OFFSET_REL_TO_MSB = 1;         // 1 = MSB, 2 = LSB
+   parameter OFFSET_REL_TO_MSB = 1;         // 1 = MSB, 0 = LSB
    parameter OFFSET_1 = 0;                  // position of first offset
    parameter OFFSET_2 = INPUT_DATA_WIDTH-1; // position of second offest
 
@@ -43,7 +43,7 @@ module slice(clk,
 	       else // OFFSET_RELATIVE_TO_MSB = 0 (LSB)
 		 begin
 
-		    data_out <= data_in[DATA_WIDTH-1-OFFSET_2:DATA_WIDTH-1-OFFSET_1];
+		    data_out <= data_in[(INPUT_DATA_WIDTH-1'd1)-OFFSET_1:(INPUT_DATA_WIDTH-1'd1)-OFFSET_2];
 
 		 end
 	    end
