@@ -8,18 +8,19 @@ MOD_PATH = resource_filename(__name__, '') + os.path.sep
 
 
 ICARUS_CMD = 'iverilog ' + \
-    '-o {mod_path}counter_tb ' + \
+    '-o {mod_path}mux_tb ' + \
     '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DSELECT_LINES={select_lines} ' + \
     '{mod_path}mux_tb.v ' + \
     '{mod_path}mux.v'
 
-VVP_CMD = "vvp -m {vpi_path} {mod_path}counter_tb"
+VVP_CMD = "vvp -m {vpi_path} {mod_path}mux_tb"
 
 
 def mux(select, data_in, data_out, 
             architecture, select_lines):
+    print ICARUS_COMMAND
     simcmd = ICARUS_CMD.format(mod_path=MOD_PATH,
                                architecture=architecture,
                                select_lines=select_lines)
@@ -86,36 +87,34 @@ def generate_cosim(architecture,
     clean_up()
     return output
 
-#
+
 #def check_output_latency(latency):
 #    """ Check output latency is within specification """
 #    assert latency <= 3
-#
-#
-#def check_full_range(output, expected):
-#    """ Check full output range for correctness """
-#    assert output[:len(expected)] == expected
-# 
-#
+
+
+def check_full_range(output, expected):
+    """ Check full output range for correctness """
+    assert output[:len(expected)] == expected
+ 
+
 #def check_roll_over(output, count_to, count_from):
 #    """ Check roll-over at COUNT_TO """
 #    last = output.index(count_to)
 #    assert output[last+1] == count_from
-#
-#
-#def test_bitwidths():
-#    step = 1
-#    count_from = 0
-#    for bitwidth in range(2, 12):
-#        count_to = 2**bitwidth-1
-#        output = generate_cosim("BEHAVIORAL",
-#                                select_lines)
-#        latency = output.index(count_from+step) - 1
-#        expected = [0]*latency + range(count_from, count_to, step)
-#        yield check_output_latency, latency
-#        yield check_full_range, output, expected
-#        yield check_roll_over, output, count_to, count_from
-#
+
+
+def test_bitwidths():
+    select_lines = 8
+    for select_lines in range(0, 7):
+        output = generate_cosim("BEHAVIORAL",
+                                select_lines)
+        #latency = output.index(count_from+step) - 1
+        #expected = [0]*latency + range(count_from, count_to, step)
+        #yield check_output_latency, latency
+        yield check_full_range, output, expected
+        #yield check_roll_over, output, count_to, count_from
+
 
 if __name__ == "__main__":
     generate_cosim("BEHAVIOURAL", 4)
