@@ -8,12 +8,9 @@ def mux_wrapper(block_name,
             SELECT_LINES=8
             ):
 
-
-   @instance
-   def initial():
-      data_out = data_in[select]
-      yield data_out
-   
+   @always(delay(1))
+   def logic():
+      data_out.next = data_in[select]
    
    
    __verilog__ = \
@@ -29,7 +26,7 @@ def mux_wrapper(block_name,
    );
    """
 
-   return initial
+   return logic
 
 
 #def convert():

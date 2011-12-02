@@ -12,17 +12,17 @@ module bit_shift(clk,
    
    // Top level block parameters
    parameter ARCHITECTURE = "BEHAVIORAL"; // BEHAVIORAL, VIRTEX5, VIRTEX6
-   parameter DATA_WIDTH = 8;              // number of input bits
+   parameter INPUT_DATA_WIDTH = 8;        // number of input bits
    parameter SHIFT_DIRECTION = 1;         // 1 = shift right, 0 = shift left
    parameter NUMBER_BITS = 1;             // number of bits to shift
    parameter WRAP = 0;                    // whether to wrap the shift or not
 
    // Input
    input clk;
-   input[DATA_WIDTH-1:0] data_in;
+   input[INPUT_DATA_WIDTH-1:0] data_in;
 
    // Output
-   output reg [DATA_WIDTH-1:0] data_out;
+   output reg [INPUT_DATA_WIDTH-1:0] data_out;
 
    // Generate according to implementation
    generate

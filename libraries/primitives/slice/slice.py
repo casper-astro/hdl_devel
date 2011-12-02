@@ -13,15 +13,15 @@ def slice_wrapper(block_name,
 
    @always(clk.posedge)
    def logic():
-      if (rst == 0 and out < COUNT_TO):
-         if (en == 1):
-            out == out + STEP
+      if OFFSET_REL_TO_MSB:
+         data_out.next = data_in[OFFSET_2:OFFSET_1]
       else:
-         out = COUNT_FROM
+         data_out.next = data_in[OFFSET_1:OFFSET_2]
+
 
    __verilog__ = \
    """
-   counter 
+   slice 
    #(
       .ARCHITECTURE      (%(ARCHITECTURE)s),
       .INPUT_DATA_WIDTH  (%(INPUT_DATA_WIDTH)s),

@@ -41,7 +41,7 @@ def generate_cosim(architecture,
 
     select   = Signal(intbv(0))
     data_in  = Signal(intbv(0))
-    data_out = Signal(intbv(0))
+    data_out = Signal(bool(0))
 
     dut = mux(select,
               data_in, 
