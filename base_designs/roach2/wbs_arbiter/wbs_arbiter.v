@@ -10,6 +10,7 @@ module wbs_arbiter(
     wbs_adr_o, wbs_dat_o, wbs_dat_i,
     wbs_ack_i
   );
+  parameter ARCHITECTURE = "BEHAVIORAL";
   parameter NUM_SLAVES = 14;
   parameter SLAVE_ADDR = 0;
   parameter SLAVE_HIGH = 0;

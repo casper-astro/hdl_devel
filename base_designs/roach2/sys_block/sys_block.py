@@ -1,6 +1,6 @@
 from myhdl import *
 
-def clk_gen_wrapper(block_name,
+def system_block_wrapper(block_name,
             clk_100,
             rst,
             clk0,
