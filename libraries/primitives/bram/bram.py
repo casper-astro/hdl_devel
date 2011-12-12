@@ -1,6 +1,6 @@
 from myhdl import *
 
-def counter_wrapper(block_name,
+def bram(block_name,
             clk,
             en,
             rst,

@@ -1,6 +1,6 @@
 from myhdl import *
 
-def counter_wrapper(block_name,
+def delay_wrapper(block_name,
             clk,
             en,
             rst,
@@ -22,7 +22,7 @@ def counter_wrapper(block_name,
 
    __verilog__ = \
    """
-   counter 
+   delay 
    #(
       .ARCHITECTURE ("%(ARCHITECTURE)s"),
       .DATA_WIDTH   (%(DATA_WIDTH)s),

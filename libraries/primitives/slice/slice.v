@@ -1,7 +1,8 @@
-module slice(clk,
-             data_in,
-	     data_out
-            );
+module slice(
+      clk,
+      data_in,
+      data_out
+   );
 
    // Diagram positioning parameters
    parameter BLOCK_NAME = "slice"; // hierarchical block name
