@@ -14,22 +14,28 @@ module mux(
    // Top level block parameters
    parameter ARCHITECTURE = "BEHAVIORAL";  // BEHAVIORAL, VIRTEX5, VIRTEX6
    parameter SELECT_LINES = 4;             // number of inputs into mux, must be a power of 2.
+   parameter DATA_WIDTH   = 1;             // the width of the output data
 
-   input[SELECT_LINES-1:0] select;
-   input[(2**SELECT_LINES)-1:0] data_in;
+   input wire [SELECT_LINES-1:0] select;
+   input wire [DATA_WIDTH*(2**SELECT_LINES)-1:0] data_in;
 
-   output data_out;
+   output reg [DATA_WIDTH-1:0] data_out;
 
-   wire data_out;
-   wire[SELECT_LINES-1:0] select;
-   wire[(2**SELECT_LINES)-1:0] data_in;
-
+   integer i,j;
+   
    // Generate according to implementation
    generate
    case (ARCHITECTURE)
      "BEHAVIORAL" : 
        begin
-          assign data_out = data_in[select];
+       always @(select or data_in)
+          begin
+          j = select;
+          for (i = 0; i < DATA_WIDTH; i = i +1)
+             begin
+                data_out[i] = data_in[DATA_WIDTH * j + i];
+             end
+          end
        end // case "BEHAVIORAL"
 
      "VIRTEX5" : 

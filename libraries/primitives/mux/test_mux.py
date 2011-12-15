@@ -12,6 +12,7 @@ ICARUS_CMD = 'iverilog ' + \
     '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DSELECT_LINES={select_lines} ' + \
+    '-DDATA_WIDTH={data_width} ' + \
     '{mod_path}mux_tb.v ' + \
     '{mod_path}mux.v'
 
@@ -23,7 +24,8 @@ def mux(select, data_in, data_out,
     print ICARUS_COMMAND
     simcmd = ICARUS_CMD.format(mod_path=MOD_PATH,
                                architecture=architecture,
-                               select_lines=select_lines)
+                               select_lines=select_lines,
+                               data_width=data_width)
     proc = subprocess.Popen(shlex.split(simcmd))
     if proc.wait(): # wait for Icarus compiler to finish
         raise RuntimeError('Icarus compile failed (see above)!')
@@ -37,6 +39,7 @@ def clean_up():
 
 def generate_cosim(architecture,
                    select_lines,
+                   data_width,
                    runtime=1024):
 
     select   = Signal(intbv(0))
@@ -108,7 +111,8 @@ def test_bitwidths():
     select_lines = 8
     for select_lines in range(0, 7):
         output = generate_cosim("BEHAVIORAL",
-                                select_lines)
+                                select_lines,
+                                data_width)
         #latency = output.index(count_from+step) - 1
         #expected = [0]*latency + range(count_from, count_to, step)
         #yield check_output_latency, latency
@@ -117,5 +121,5 @@ def test_bitwidths():
 
 
 if __name__ == "__main__":
-    generate_cosim("BEHAVIOURAL", 4)
+    generate_cosim("BEHAVIOURAL", 4, 1)
     #main()
