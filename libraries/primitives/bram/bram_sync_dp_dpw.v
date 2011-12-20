@@ -46,6 +46,11 @@ module bram_dp #(
     output wire [B_DATA_WIDTH-1:0] b_data_out
 );
     //====================
+    // Local variables
+    //====================
+    reg [(A_DATA_WIDTH-B_DATA_WIDTH)-1:0] b_be;
+    
+    //====================
     // Shared memory
     //====================
     reg [A_DATA_WIDTH-1:0] mem [A_DATA_DEPTH-1:0];
@@ -73,7 +78,7 @@ module bram_dp #(
     end
 
     //====================
-    // Mux 
+    // Read Port B Mux 
     //====================
     mux 
     #(
@@ -84,5 +89,9 @@ module bram_dp #(
        .data_in  (mem [b_addr%A_DATA_DEPTH]),
        .data_out (b_data_out)
     );
+
+    //===================
+    // TODO: Implement writing on port b
+    //===================
 
 endmodule
