@@ -3,9 +3,10 @@ module sw_reg #(
     // parameters
     //================
     parameter C_BASEADDR      = 32'h00000000,
-    parameter C_HIGHADDR      = 32'h0000FFFF,
-    parameter C_WB_ADDR_WIDTH = 32,
-    parameter C_WB_DATA_WIDTH = 32
+    parameter C_HIGHADDR      = 32'h0000000F,
+    parameter C_WB_DATA_WIDTH = 32,
+    parameter C_WB_ADDR_WIDTH = 1,
+    parameter C_BYTE_EN_WIDTH = 4
   )  (
     //================
     // inputs
@@ -81,6 +82,7 @@ module sw_reg #(
   assign wb_dat_o = wb_dat_o_reg;
 
   always @(*) begin
+    if(~wb_we_i)
     case (wb_adr_i[6:2])
       5'h0:   wb_dat_o_reg <= reg_buffer;
       default:

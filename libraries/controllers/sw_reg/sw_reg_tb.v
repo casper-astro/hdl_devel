@@ -35,14 +35,27 @@ module sw_reg_tb;
          $dumpvars;
 
          wb_clk_i = 0;
-         wb_sel_i = 4'h4;
+         wb_sel_i = 4'hE;
          wb_stb_i = 1;
          wb_cyc_i = 1;
-         wb_we_i = 1;
+         wb_we_i  = 1;
          wb_adr_i = 32'h00000000;
          wb_dat_i = 32'hEEEEEEEE;
+
+         #5 
+         
+         wb_stb_i = 0;
+         wb_cyc_i = 0;
       
-         #100 $finish;
+         #5
+         
+         wb_adr_i = 32'h00000000;
+         wb_stb_i = 1;
+         wb_cyc_i = 1;
+         wb_we_i = 0;
+         
+         
+         #20 $finish;
       end
 
    always #1
