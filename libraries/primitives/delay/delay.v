@@ -15,7 +15,7 @@ module delay(
    
    // Top level block parameters
    parameter ARCHITECTURE = "BEHAVIORAL"; // BEHAVIORAL, VIRTEX5, VIRTEX6
-   parameter DELAY_TYPE = "SYNC";         // SYNC, DATA, COUNTER, REGISTERS
+   parameter DELAY_TYPE = "SYNC";         // SYNC, DATA, COUNTER, REGISTERS(FIFO)
    parameter DATA_WIDTH = 8;              // number of bits in counter
    parameter LATENCY = 1;                 // delay in number of clock cycles
 
@@ -34,14 +34,18 @@ module delay(
      "BEHAVIORAL" : 
        begin
           case (DELAY_TYPE)
-	     "COUNTER" :
-	       begin
-                  //
-	       end
-	     "SYNC" :
-	       begin
-	          //
-               end
+	         "COUNTER" :
+	           begin
+                      //
+	           end
+	         "FIFO" :
+	           begin
+                      //
+	           end
+	         "SYNC" :
+	           begin
+	              //
+              end
 
           endcase
 	  

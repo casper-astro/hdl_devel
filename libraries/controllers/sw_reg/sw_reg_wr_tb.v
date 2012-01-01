@@ -13,7 +13,10 @@ module sw_reg_tb;
    wire        wb_ack_o;
    wire        wb_err_o;
 
-   sw_reg #(
+   reg         fabric_clk;
+   wire        fabric_data_out;
+
+   sw_reg_wr #(
       .C_BASEADDR (32'h00000000),
       .C_HIGHADDR (32'h0000FFFF)
    ) dut (
@@ -27,7 +30,11 @@ module sw_reg_tb;
       .wb_dat_i   (wb_dat_i),
       .wb_dat_o   (wb_dat_o),
       .wb_ack_o   (wb_ack_o),
-      .wb_err_o   (wb_err_o)
+      .wb_err_o   (wb_err_o),
+   
+      .fabric_clk      (fabric_clk),
+      .fabric_data_out (fabric_data_out)
+   
    );
 
    initial
@@ -60,7 +67,6 @@ module sw_reg_tb;
 
    always #1
       wb_clk_i = ~wb_clk_i;
-
 
 
 endmodule

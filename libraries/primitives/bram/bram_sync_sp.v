@@ -28,14 +28,14 @@ module bram_sp #(
 );
 
    //===============
-   // Shared memory
+   // Memory
    //===============
    reg [DATA_WIDTH-1:0] mem [(2**ADDR_WIDTH)-1:0];
    
    always @(posedge clk) begin
        data_out <= mem[addr];
        if(wr) begin
-           data_out      <= data_in;
+           data_out  <= data_in;
            mem[addr] <= data_in;
        end
    end

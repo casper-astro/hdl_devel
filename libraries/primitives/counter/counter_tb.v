@@ -13,20 +13,22 @@ module counter_tb;
    // declare wires
    wire [LOCAL_DATA_WIDTH-1:0] out;
 
+   //=====================================
    // instance, "(d)esign (u)nder (t)est"
-   counter dut (
-		.clk(clk), 
-		.en(en), 
-		.rst(rst), 
-		.out(out)
+   //=====================================
+   counter #(
+       .ARCHITECTURE (`ifdef ARCHITECTURE `ARCHITECTURE `else "BEHAVIORAL" `endif),
+       .DATA_WIDTH   (`ifdef DATA_WIDTH   `DATA_WIDTH   `else 8            `endif),
+       .COUNT_FROM   (`ifdef COUNT_FROM   `COUNT_FROM   `else 0            `endif),
+       .COUNT_TO     (`ifdef COUNT_TO     `COUNT_TO     `else 255          `endif),
+       .STEP         (`ifdef STEP         `STEP         `else 1            `endif)
+    ) dut (
+		   .clk (clk), 
+		   .en  (en), 
+		   .rst (rst), 
+		   .out (out)
 		);
 
-   // define all of its parameters
-   defparam dut.ARCHITECTURE = `ifdef ARCHITECTURE `ARCHITECTURE `else "BEHAVIORAL" `endif;
-   defparam dut.DATA_WIDTH   = `ifdef DATA_WIDTH   `DATA_WIDTH   `else 8            `endif;
-   defparam dut.COUNT_FROM   = `ifdef COUNT_FROM   `COUNT_FROM   `else 0            `endif;
-   defparam dut.COUNT_TO     = `ifdef COUNT_TO     `COUNT_TO     `else 255          `endif;
-   defparam dut.STEP         = `ifdef STEP         `STEP         `else 1            `endif;
 
 `ifdef MYHDL
       
@@ -41,17 +43,17 @@ module counter_tb;
 
    // initialize
    initial
-     begin
-	clk = 0;
-	en = 1;
-	rst = 0;
-     end
+   begin
+      clk = 0;
+      en = 1;
+      rst = 0;
+   end
 
    // simulate the clock
    always #1
-     begin
-	clk = ~clk;
-     end
+   begin
+	    clk = ~clk;
+   end
 
    // print the output
    always @(posedge clk) $display(out);

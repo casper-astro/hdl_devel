@@ -1,15 +1,15 @@
-//===========================================================================//
-//                                                                           //
-//      Syncronous dual-port with different port widths BRAM                 //
-//                                                                           //
-//      Module name: bram_sync_dp_dpw                                        //
-//      Desc: parameterized, syncronous, inferable, true dual-port,          //
-//            dual clock with different port widths block ram                //
-//      Date: Dec 2011                                                       //
-//      Developer: Wesley New                                                //
-//      Notes: Developed from a combiniation of bram implmentations          //
-//                                                                           //
-//===========================================================================//
+//============================================================================//
+//                                                                            //
+//      Syncronous dual-port with different port widths BRAM                  //
+//                                                                            //
+//      Module name: bram_sync_dp_dpw                                         //
+//      Desc: parameterized, syncronous, inferable, true dual-port,           //
+//            dual clock with different port widths block ram                 //
+//      Date: Dec 2011                                                        //
+//      Developer: Wesley New                                                 //
+//      Notes: Developed from a combiniation of bram implmentations           //
+//                                                                            //
+//============================================================================//
 
 module bram_dp #(
     

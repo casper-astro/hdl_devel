@@ -4,7 +4,7 @@
 //                                                                           //
 //      Module name: bram_sync_dp                                            //
 //      Desc: parameterized, syncronous, inferable, true dual-port,          //
-//            dual clock  block ram                                          //
+//            dual clock block ram                                           //
 //      Date: Dec 2011                                                       //
 //      Developer: Wesley New                                                //
 //      Notes: Developed from a combiniation of bram implmentations          //
