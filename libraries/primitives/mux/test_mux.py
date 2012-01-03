@@ -1,12 +1,29 @@
+#==============================================================================#
+#                                                                              # 
+#      Counter python testing                                                  # 
+#                                                                              # 
+#      Module name: test_counter                                               # 
+#      Desc: The MyHDL code that test the counter module using co-simulation   # 
+#      Date: Oct 2011                                                          # 
+#      Developer: Rurik Primiani & Wesley New                                  # 
+#      Licence: GNU General Public License ver 3                               # 
+#      Notes:                                                                  # 
+#                                                                              # 
+#==============================================================================#
+
 import os, shlex, subprocess
 from pkg_resources import resource_filename
 from myhdl import *
 
-
+#============================
+# Paths to Co-sim and MyHDL
+#============================
 VPI_PATH = os.path.join(os.getenv('MYHDL'))
 MOD_PATH = resource_filename(__name__, '') + os.path.sep
 
-
+#========================
+# Builds Icarus Command
+#========================
 ICARUS_CMD = 'iverilog ' + \
     '-o {mod_path}mux_tb ' + \
     '-DMYHDL ' + \
@@ -18,7 +35,9 @@ ICARUS_CMD = 'iverilog ' + \
 
 VVP_CMD = "vvp -m {vpi_path} {mod_path}mux_tb"
 
-
+#=============================
+# Call to the Counter Wrapper
+#=============================
 def mux(select, data_in, data_out, 
             architecture, select_lines):
     print ICARUS_COMMAND

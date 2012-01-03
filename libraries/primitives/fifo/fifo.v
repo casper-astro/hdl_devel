@@ -1,51 +1,46 @@
-// Model of FIFO
+//============================================================================//
+//                                                                            //
+//      FIFO                                                                  //
+//                                                                            //
+//      Module name: fifo                                                     //
+//      Desc: parameterized fifo                                              //
+//      Date: Oct 2011                                                        //
+//      Developer: Wesley New                                                 //
+//      Licence: GNU General Public License ver 3                             //
+//      Notes: Uses the dual port BRAM module                                 //
+//                                                                            //
+//============================================================================//
 
-module fifo(
-      wr_clk,
-      rd_clk,
-      en,
-      rst,
-      wr_req,
-      rd_req,
-      data_in,
-
-      data_out,
-      perc_full,
-      full,
-      empty,
-      usedw
+module fifo #(
+      //=======================
+      //   fifo parameters
+      //=======================
+      
+      parameter DATA_WIDTH = 16;
+      parameter FIFO_DEPTH = 1024;
+      parameter ADDR_BITS  = 10;
+   ) (
+      //=======================
+      //   input ports
+      //=======================
+      input                  wr_clk;
+      input                  rd_clk;
+      input                  en;
+      input                  rst;
+      input                  wr_req;
+      input                  rd_req;
+      input [DATA_WIDTH-1:0] data_in;
+      
+      //=======================
+      //   output ports
+      //=======================
+      output     [DATA_WIDTH-1:0] data_out;
+      output                      perc_full;
+      output                      full;
+      output                      empty;
+      output reg [ADDR_BITS-1:0]  usedw;
    );
-   
 
-   //=======================
-   //   fifo parameters
-   //=======================
-   
-   parameter DATA_WIDTH = 16;
-   parameter FIFO_DEPTH = 1024;
-   parameter ADDR_BITS  = 10;
-   
-   //`define rd_req 0;  // Set this to 0 for rd_ack, 1 for rd_req
-   
-   //=======================
-   //   input ports
-   //=======================
-   input  wr_clk;
-   input  rd_clk;
-   input  en;
-   input  rst;
-   input  wr_req;
-   input  rd_req;
-   input  [DATA_WIDTH-1:0] data_in;
-   
-   //=======================
-   //   output ports
-   //=======================
-   output [DATA_WIDTH-1:0] data_out;
-   output perc_full;
-   output full;
-   output empty;
-   output reg [ADDR_BITS-1:0]  usedw;
    
    //=======================
    //   internal variables

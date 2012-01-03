@@ -1,3 +1,16 @@
+//============================================================================//
+//                                                                            //
+//      Parameterize Counter                                                  //
+//                                                                            //
+//      Module name: counter                                                  //
+//      Desc: parameterized counter, counts up/down in any increment          //
+//      Date: Oct 2011                                                        //
+//      Developer: Rurik Primiani & Wesley New                                //
+//      Licence: GNU General Public License ver 3                             //
+//      Notes:                                                                //
+//                                                                            //
+//============================================================================//
+
 module counter #(
       //================================
       // Diagram positioning parameters
@@ -30,7 +43,9 @@ module counter #(
       output reg [DATA_WIDTH-1:0] out
    );
 
+   //=======================================
    // Generate according to implementation
+   //=======================================
    generate
       case (ARCHITECTURE)
          
@@ -49,7 +64,7 @@ module counter #(
                else
                begin
      	            out <= COUNT_FROM;
-               end // else: !if(rst == 0)
+               end // else: if(rst != 0)
             end
          end // case "BEHAVIORAL"
  
@@ -65,7 +80,7 @@ module counter #(
      
          default :
          begin
-            // Instantiate V6 counter primitive
+            // default case
          end
 
       endcase 

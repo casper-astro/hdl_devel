@@ -1,20 +1,47 @@
+#==============================================================================#
+#                                                                              # 
+#      Multiplexer wrapper and simulation model                                # 
+#                                                                              # 
+#      Module name: mux_wrapper                                                # 
+#      Desc: wraps the verilog counter and provides a model for simulation     # 
+#      Date: Oct 2011                                                          # 
+#      Developer: Rurik Primiani & Wesley New                                  # 
+#      Licence: GNU General Public License ver 3                               # 
+#      Notes:                                                                  # 
+#                                                                              # 
+#==============================================================================#
+
 from myhdl import *
 
 def mux_wrapper(block_name,
-            select,
-            data_in,
-            data_out,
-            ARCHITECTURE="BEHAVIORAL",
-            SELECT_LINES=8,
-            DATA_WIDTH=1
-            ):
+      #========
+      # Ports
+      #========
+      select,
+      data_in,
+      data_out,
+      
+      #============
+      # Parameter 
+      #============
+      ARCHITECTURE="BEHAVIORAL",
+      SELECT_LINES=8,
+      DATA_WIDTH=1
+   ):
 
-   #TODO: rework model so that it takes into account the DATA_WIDTH
+
+   #===================
+   # Simulation Logic
+   #===================
+   #TODO: rework model so that it takes into account the DATA_WIDTH, It may just work as is though?
    @always(delay(1))
    def logic():
       data_out.next = data_in[select]
    
    
+   #====================
+   # Mux Instantiation 
+   #====================
    __verilog__ = \
    """
    mux
@@ -38,11 +65,14 @@ def mux_wrapper(block_name,
    return logic
 
 
+#=======================================
+# For testing of conversion to verilog
+#=======================================
 def convert():
 
   select, data_in, data_out = [Signal(bool(0)) for i in range(3)]
 
-  toVerilog(mux_wrapper, block_name="mux1", select=select, data_in=data_in, data_out=data_out)
+  toVerilog(mux_wrapper, block_name="mux1", select=srelect, data_in=data_in, data_out=data_out)
 
 
 if __name__ == "__main__":

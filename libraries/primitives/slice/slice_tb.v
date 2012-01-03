@@ -1,32 +1,54 @@
-// slice test-bench script
+//============================================================================//
+//                                                                            //
+//      Slice test bench                                                      //
+//                                                                            //
+//      Module name: slice_tb                                                 //
+//      Desc: runs and tests the slice module, and provides and interface     //
+//            to test the module from Python (MyHDL)                          //
+//      Date: Nov 2011                                                        //
+//      Developer: Wesley New                                                 //
+//      Licence: GNU General Public License ver 3                             //
+//      Notes: This only tests the basic functionality of the module, more    //
+//             comprehensive testing is done in the python test file          //
+//                                                                            //
+//============================================================================//
 
 module slice_tb;
 
+   //===================
    // local parameters
+   //==================
    localparam LOCAL_DATA_WIDTH = `ifdef DATA_WIDTH `DATA_WIDTH `else 8 `endif;
-
-   // declare regs
+   
+   //=============
+   // local regs
+   //=============
    reg clk;
    reg[LOCAL_DATA_WIDTH-1:0] data_in;
-   //reg data_out;
    
-   // declare wires
+   //==============
+   // local wires
+   //==============
    wire [5-1:0] data_out;
 
+   //=====================================
    // instance, "(d)esign (u)nder (t)est"
-   slice dut (
-            .clk(clk), 
-            .data_in(data_in), 
-            .data_out(data_out)
-	   );
+   //=====================================
+   slice # (
+      .ARCHITECTURE      (`ifdef ARCHITECTURE      `ARCHITECTURE      `else "BEHAVIORAL" `endif),
+      .INPUT_DATA_WIDTH  (`ifdef INPUT_DATA_WIDTH  `INPUT_DATA_WIDTH  `else 8            `endif),
+      .OFFSET_REL_TO_MSB (`ifdef OFFSET_REL_TO_MSB `OFFSET_REL_TO_MSB `else 1            `endif),
+      .OFFSET_1          (`ifdef OFFSET_1          `OFFSET_1          `else 1            `endif),
+      .OFFSET_2          (`ifdef OFFSET_2          `OFFSET_2          `else 5            `endif)
+   ) dut (
+      .clk(clk), 
+      .data_in(data_in), 
+      .data_out(data_out)
+   );
 
-   // define all of its parameters
-   defparam dut.ARCHITECTURE      = `ifdef ARCHITECTURE      `ARCHITECTURE      `else "BEHAVIORAL" `endif;
-   defparam dut.INPUT_DATA_WIDTH  = `ifdef INPUT_DATA_WIDTH  `INPUT_DATA_WIDTH  `else 8            `endif;
-   defparam dut.OFFSET_REL_TO_MSB = `ifdef OFFSET_REL_TO_MSB `OFFSET_REL_TO_MSB `else 1            `endif;
-   defparam dut.OFFSET_1          = `ifdef OFFSET_1          `OFFSET_1          `else 1            `endif;
-   defparam dut.OFFSET_2          = `ifdef OFFSET_2          `OFFSET_2          `else 5            `endif;
-
+//==============
+// MyHDL ports
+//==============
 `ifdef MYHDL
       
    // define what myhdl takes over
@@ -38,23 +60,31 @@ module slice_tb;
 
 `else
 
+   //=============
    // initialize
+   //=============
    initial
-     begin
-        clk = 0;
-	data_in = 8'b00001111;
-     end
-
-   // simulate the clock
-   always #1
-     begin
-        clk = ~clk;
-     end
-
-   // print the output
-   always @(posedge clk) $display(data_out);
+   begin
+      clk = 0;
+      data_in = 8'b00001111;
+   end
    
-   // finish after 100 clocks
+   //====================
+   // simulate the clock
+   //====================
+   always #1
+   begin
+      clk = ~clk;
+   end
+   
+   //===============
+   // print output
+   //===============
+   always @(posedge clk) $display(data_out);
+      
+   //===================
+   // finish condition
+   //===================
    initial #5 $finish;
 
 `endif

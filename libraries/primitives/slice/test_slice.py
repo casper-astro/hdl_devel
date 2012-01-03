@@ -1,14 +1,31 @@
+#==============================================================================#
+#                                                                              # 
+#      Slice python testing                                                    # 
+#                                                                              # 
+#      Module name: test_slice                                                 # 
+#      Desc: The MyHDL code that test the slice module using co-simulation     # 
+#      Date: Nov 2011                                                          # 
+#      Developer: Wesley New                                                   # 
+#      Licence: GNU General Public License ver 3                               # 
+#      Notes:                                                                  # 
+#                                                                              # 
+#==============================================================================#
+
 import os, shlex, subprocess
 from pkg_resources import resource_filename
 from myhdl import *
 
-
+#============================
+# Paths to Co-sim and MyHDL
+#============================
 VPI_PATH = os.path.join(os.getenv('MYHDL'))
 MOD_PATH = resource_filename(__name__, '') + os.path.sep
 
-
+#========================
+# Builds Icarus Command
+#========================
 ICARUS_CMD = 'iverilog ' + \
-    '-o {mod_path}counter_tb ' + \
+    '-o {mod_path}slice_tb ' + \
     '-DMYHDL ' + \
     '-DARCHITECTURE=\\"{architecture}\\" ' + \
     '-DINPUT_DATA_WIDTH={input_data_width} ' + \
@@ -20,7 +37,9 @@ ICARUS_CMD = 'iverilog ' + \
 
 VVP_CMD = "vvp -m {vpi_path} {mod_path}slice_tb"
 
-
+#============================
+# Call to the Slice Wrapper
+#============================
 def slice_wrapper(clk, data_in, data_out, 
             architecture, input_data_width, offset_1, offset_2):
     simcmd = ICARUS_CMD.format(mod_path=MOD_PATH,
@@ -75,7 +94,7 @@ def generate_cosim(architecture,
         def drive_clk():
             clk.next = not clk
 
-        # monitor counter output
+        # monitor slice output
         @instance
         def monitor():
             while True:

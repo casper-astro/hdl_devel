@@ -1,16 +1,39 @@
+#==============================================================================#
+#                                                                              # 
+#      Bit shift wrapper and simulation model                                  # 
+#                                                                              # 
+#      Module name: bit_shift_wrapper                                          # 
+#      Desc: wraps the verilog bit shift and provides a model for simulation   # 
+#      Date: Nov 2011                                                          # 
+#      Developer: Wesley New                                                   # 
+#      Licence: GNU General Public License ver 3                               # 
+#      Notes:                                                                  # 
+#                                                                              # 
+#==============================================================================#
+
 from myhdl import *
 
 def bit_shift_wrapper(block_name,
-            clk,
-            data_in,
-            data_out,
-            ARCHITECTURE="BEHAVIORAL",
-            INPUT_DATA_WIDTH=8,
-            SHIFT_DIRECTION=1,
-            NUMBER_OF_BITS=1,
-            WRAP=0
-            ):
+      #==================
+      # Ports
+      #==================
+      clk,
+      data_in,
+      data_out,
+      
+      #==================
+      # Parameters
+      #==================
+      ARCHITECTURE="BEHAVIORAL",
+      INPUT_DATA_WIDTH=8,
+      SHIFT_DIRECTION=1,
+      NUMBER_OF_BITS=1,
+      WRAP=0
+   ):
 
+   #====================
+   # Simulation Logic
+   #====================  
    @always(clk.posedge)
    def logic():
       if WRAP == 0:
@@ -18,6 +41,9 @@ def bit_shift_wrapper(block_name,
       else:
          data_out.next = (data_in[:]*2**NUMBER_OF_BITS)
 
+   #==========================
+   # Bit Shift Instantiation
+   #==========================
    __verilog__ = \
    """
    bit_shift

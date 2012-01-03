@@ -1,16 +1,35 @@
-// counter test-bench script
+//============================================================================//
+//                                                                            //
+//      Counter test bench                                                    //
+//                                                                            //
+//      Module name: counter_tb                                               //
+//      Desc: runs and tests the counter module, and provides and interface   //
+//            to test the module from Python (MyHDL)                          //
+//      Date: Oct 2011                                                        //
+//      Developer: Rurik Primiani & Wesley New                                //
+//      Licence: GNU General Public License ver 3                             //
+//      Notes: This only tests the basic functionality of the module, more    //
+//             comprehensive testing is done in the python test file          //
+//                                                                            //
+//============================================================================//
 
 module counter_tb;
 
+   //===================
    // local parameters
+   //===================
    localparam LOCAL_DATA_WIDTH = `ifdef DATA_WIDTH `DATA_WIDTH `else 8 `endif;
 
-   // declate regs
+   //=============
+   // local regs
+   //=============
    reg clk;
    reg en;
    reg rst;
    
-   // declare wires
+   //==============
+   // local wires
+   //==============
    wire [LOCAL_DATA_WIDTH-1:0] out;
 
    //=====================================
@@ -29,19 +48,21 @@ module counter_tb;
 		   .out (out)
 		);
 
-
+//==============
+// MyHDL ports
+//==============
 `ifdef MYHDL
-      
    // define what myhdl takes over
    // only if we're running myhdl   
    initial begin
       $from_myhdl(clk, en, rst);
       $to_myhdl(out);
    end
-
 `else
-
+   
+   //=============
    // initialize
+   //=============
    initial
    begin
       clk = 0;
@@ -49,16 +70,22 @@ module counter_tb;
       rst = 0;
    end
 
+   //====================
    // simulate the clock
+   //====================
    always #1
    begin
 	    clk = ~clk;
    end
 
-   // print the output
+   //===============
+   // print output
+   //===============
    always @(posedge clk) $display(out);
    
-   // finish after 100 clocks
+   //===============================
+   // finish after 100 clock cycles
+   //===============================
    initial #200 $finish;
 
 `endif

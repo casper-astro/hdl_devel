@@ -1,16 +1,39 @@
+#==============================================================================#
+#                                                                              # 
+#      Slice wrapper and simulation model                                      # 
+#                                                                              # 
+#      Module name: slice_wrapper                                              # 
+#      Desc: wraps the verilog slice module and provides  simulation model     # 
+#      Date: Nov 2011                                                          # 
+#      Developer: Wesley New                                                   # 
+#      Licence: GNU General Public License ver 3                               # 
+#      Notes:                                                                  # 
+#                                                                              # 
+#==============================================================================#
+
 from myhdl import *
 
 def slice_wrapper(block_name,
-            clk,
-	    data_in,
-            data_out,
-            ARCHITECTURE="BEHAVIORAL",
-            INPUT_DATA_WIDTH=8,
-            OFFSET_REL_TO_MSB=1,
-            OFFSET_1=0,
-            OFFSET_2=7
-            ):
-
+      #========
+      # Ports
+      #========
+      clk,
+      data_in,
+      data_out,
+      
+      #=============
+      # Parameters
+      #=============
+      ARCHITECTURE="BEHAVIORAL",
+      INPUT_DATA_WIDTH=8,
+      OFFSET_REL_TO_MSB=1,
+      OFFSET_1=0,
+      OFFSET_2=7
+   ):
+   
+   #===================
+   # Simulation Logic
+   #===================
    @always(clk.posedge)
    def logic():
       if OFFSET_REL_TO_MSB:
@@ -18,7 +41,9 @@ def slice_wrapper(block_name,
       else:
          data_out.next = data_in[OFFSET_1:OFFSET_2]
 
-
+   #======================
+   # Slice Instantiation
+   #======================
    __verilog__ = \
    """
    slice 
@@ -28,19 +53,22 @@ def slice_wrapper(block_name,
       .OFFSET_REL_TO_MSB (%(OFFSET_REL_TO_MSB)s),
       .OFFSET_1          (%(OFFSET_1)s),
       .OFFSET_2          (%(OFFSET_2)s)
-   ) counter_%(block_name)s (
+   ) slice_%(block_name)s (
       .clk      (%(clk)s),
       .data_in  (%(data_in)s),
       .data_out (%(data_out)s)
    );
    """
 
+   # removes warning when converting to hdl
    data_in.driven = "wire"
    data_out.driven = "wire"
 
    return logic
 
-
+#=======================================
+# For testing of conversion to verilog
+#=======================================
 def convert():
 
   clk, data_in, data_out = [Signal(bool(0)) for i in range(3)]
