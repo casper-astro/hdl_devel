@@ -13,6 +13,11 @@
 
 module bram_sync_sp #(
        //=============
+       // 
+       //=============
+       parameter ARCHITECTURE = "BEHAVIOURAL",
+       
+       //=============
        // Parameters
        //=============
        parameter DATA_WIDTH = 32,
@@ -33,15 +38,43 @@ module bram_sync_sp #(
    //===============
    reg [DATA_WIDTH-1:0] mem [(2**ADDR_WIDTH)-1:0];
    
-   //===================
-   // Read/Write Logic
-   //===================
-   always @(posedge clk) begin
-      data_out <= mem[addr];
-      if(wr) begin
-         data_out  <= data_in;
-         mem[addr] <= data_in;
-      end
-   end
 
+   //=======================================
+   // Generate according to implementation
+   //=======================================
+   generate
+      case (ARCHITECTURE)
+
+         "BEHAVIORAL" :
+         begin
+
+            //==================a
+            // Read/Write Logic
+            //===================
+            always @(posedge clk) begin
+               data_out <= mem[addr];
+               if(wr) begin
+                  data_out  <= data_in;
+                  mem[addr] <= data_in;
+               end
+            end
+         end
+
+         "VIRTEX5" :
+         begin
+            // Instantiate V5 counter primitive
+         end
+
+         "VIRTEX6" :
+         begin
+            // Instantiate V6 counter primitive
+         end
+
+         default :
+         begin
+            // default case
+         end
+
+      endcase
+   endgenerate
 endmodule

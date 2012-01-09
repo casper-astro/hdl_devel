@@ -46,7 +46,7 @@ module slice #(
          "BEHAVIORAL" : 
          begin
             // Synchronous logic
-            @(posedge clk)
+            always @(posedge clk)
             begin
                if (OFFSET_REL_TO_MSB) // (MSB)
                begin

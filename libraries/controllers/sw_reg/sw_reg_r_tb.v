@@ -1,6 +1,23 @@
-module sw_reg_tb;
+//============================================================================//
+//                                                                            //
+//      Software Reg test bench                                               //
+//                                                                            //
+//      Module name: sw_reg_tb                                                //
+//      Desc: runs and tests the sw_reg module, and provides and interface    //
+//            to test the module from Python (MyHDL)                          //
+//      Date: Dec 2011                                                        //
+//      Developer: Wesley New                                                 //
+//      Licence: GNU General Public License ver 3                             //
+//      Notes: This only tests the basic functionality of the module, more    //
+//             comprehensive testing is done in the python test file          //
+//                                                                            //
+//============================================================================//
 
+module sw_reg_r_tb;
 
+   //=====================
+   // local wires & regs
+   //=====================
    reg         wb_clk_i;
    reg         wb_rst_i;
    reg         wb_cyc_i;
@@ -16,6 +33,9 @@ module sw_reg_tb;
    reg         fabric_clk;
    wire        fabric_data_in;
 
+   //=====================================
+   // instance, "(d)esign (u)nder (t)est"
+   //=====================================
    sw_reg_r #(
       .C_BASEADDR (32'h00000000),
       .C_HIGHADDR (32'h0000FFFF)
@@ -25,7 +45,7 @@ module sw_reg_tb;
       .wb_cyc_i   (wb_cyc_i),
       .wb_stb_i   (wb_stb_i),
       .wb_we_i    (wb_we_i),
-      .wb_sel_i   (wb_sel_i),
+      
       .wb_adr_i   (wb_adr_i),
       .wb_dat_i   (wb_dat_i),
       .wb_dat_o   (wb_dat_o),
@@ -34,9 +54,23 @@ module sw_reg_tb;
    
       .fabric_clk     (fabric_clk),
       .fabric_data_in (fabric_data_in)
-   
    );
 
+//==============
+// MyHDL hooks
+//==============
+`ifdef MYHDL
+   // define what myhdl takes over
+   // only if we're running myhdl   
+   initial begin
+      $from_myhdl(fabric_clk, fabric_data_in, wb_clk_i, wb_rst_i, wb_cyc_i, wb_stb_i, wb_we_i, wb_sel_i, wb_adr_i, wb_dat_i);
+      $to_myhdl(wb_dat_o,wb_ack_o,wb_err_o);
+   end
+`else
+
+   //==============
+   // Initialize
+   //==============
    initial
       begin
          $dumpvars;
@@ -65,8 +99,12 @@ module sw_reg_tb;
          #20 $finish;
       end
 
+   //=====================
+   // Simulate the Clock
+   //=====================
    always #1
       wb_clk_i = ~wb_clk_i;
 
+`endif
 
 endmodule

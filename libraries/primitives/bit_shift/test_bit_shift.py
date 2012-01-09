@@ -4,7 +4,7 @@
 #                                                                              # 
 #      Module name: test_counter                                               # 
 #      Desc: The MyHDL code that test the counter module using co-simulation   # 
-#      Date: Oct 2011                                                          # 
+#      Date: Nov 2011                                                          # 
 #      Developer: Wesley New                                                   # 
 #      Licence: GNU General Public License ver 3                               # 
 #      Notes:                                                                  # 

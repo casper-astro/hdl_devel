@@ -4,7 +4,7 @@
 //                                                                            //
 //      Module name: bit_shift                                                //
 //      Desc: Shifts a set of bits left or right by X bits                    //
-//      Date: Dec 2011                                                        //
+//      Date: Nov 2011                                                        //
 //      Developer: Wesley New                                                 //
 //      Licence: GNU General Public License ver 3                             //
 //      Notes:                                                                //

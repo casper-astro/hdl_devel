@@ -31,7 +31,6 @@ def ibufgds_wrapper (block_name,
    return logic
 
 
-
 def convert():
    clk_n, clk_p, clk_ds = [Signal(bool(0)) for i in range(3)]
    toVerilog(ibufgds_wrapper, "1", clk_n, clk_p, clk_ds)

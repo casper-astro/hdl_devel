@@ -1,10 +1,23 @@
-//=====================================================
-//                    _________
-//      read & write |         | read only
-//   SW <----------> |   Reg   | --------> Fabric
-//                   |_________|
-//
-//=====================================================
+//============================================================================//
+//                                                                            //
+//      Software Register read and write on wishbone bus                      //
+//                                                                            //
+//      Module name: sw_reg_wr                                                //
+//      Desc: Software register with read and write on wishbone interface     //
+//            and read only on fabric interface                               //
+//      Date: Dec 2011                                                        //
+//      Developer: Wesley New                                                 //
+//      Licence: GNU General Public License ver 3                             //
+//      Notes: To avoid race conditions the software reg is split into 2      //
+//             different modules                                              //
+//                                                                            //
+//============================================================================//
+//                                _________                                   //
+//                  read & write |         | read only                        //
+//               SW <----------> |   Reg   | --------> Fabric                 //
+//                               |_________|                                  //
+//                                                                            //
+//============================================================================//
 
 
 module sw_reg_wr #(

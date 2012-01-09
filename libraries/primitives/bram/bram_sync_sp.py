@@ -1,11 +1,11 @@
 #==============================================================================#
 #                                                                              # 
-#      Counter wrapper and simulation model                                    # 
+#      BRAM single port wrapper and simulation model                           # 
 #                                                                              # 
-#      Module name: counter_wrapper                                            # 
-#      Desc: wraps the verilog counter and provides a model for simulation     # 
-#      Date: Oct 2011                                                          # 
-#      Developer: Rurik Primiani & Wesley New                                  # 
+#      Module name: bram_sp_wrapper                                            # 
+#      Desc: wraps the verilog bram_sp and provides a model for simulation     # 
+#      Date: Jan 2012                                                          # 
+#      Developer: Wesley New                                                   # 
 #      Licence: GNU General Public License ver 3                               # 
 #      Notes:                                                                  # 
 #                                                                              # 
@@ -13,27 +13,26 @@
 
 from myhdl import *
 
-def counter_wrapper(block_name,
+def bram_sync_sp_wrapper(block_name,
       #========
       # Ports
       #========
       clk,
-      en,
-      rst,
-      out,
+      wr,
+      addr,
+      data_in,
+      data_out,
 
       #=============
       # Parameters
       #=============
-      ARCHITECTURE = "BEHAVIORAL",
-      DATA_WIDTH   = 8,
-      COUNT_FROM   = 0,
-      COUNT_TO     = 256,  # should be 2^(DATAWIDTH-1)
-      STEP         = 1
+      ARCHITECTURE="BEHAVIORAL",
+      DATA_WIDTH=32,
+      ADDR_WIDTH=4
    ):
 
    #===================
-   # Simulation Logic
+   # TODO:Simulation Logic
    #===================
    @always(clk.posedge)
    def logic():
@@ -48,18 +47,17 @@ def counter_wrapper(block_name,
    #========================
    __verilog__ = \
    """
-   counter 
+   bram_sync_sp
    #(
       .ARCHITECTURE ("%(ARCHITECTURE)s"),
       .DATA_WIDTH   (%(DATA_WIDTH)s),
-      .COUNT_FROM   (%(COUNT_FROM)s),
-      .COUNT_TO     (%(COUNT_TO)s),
-      .STEP         (%(STEP)s)
+      .ADDR_WIDTH   (%(ADDR_WIDTH)s)
    ) counter_%(block_name)s (
-      .clk  (%(clk)s),
-      .en   (%(en)s),
-      .rst  (%(rst)s),
-      .out  (%(out)s)
+      .clk      (%(clk)s),
+      .wr       (%(wr)s),
+      .addr     (%(addr)s),
+      .data_in  (%(data_in)s),
+      .data_out (%(data_out)s)
    );
    """
 

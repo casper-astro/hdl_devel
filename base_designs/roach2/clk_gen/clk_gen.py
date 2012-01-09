@@ -1,15 +1,15 @@
 from myhdl import *
 
 def clk_gen_wrapper(block_name,
-            clk100,
-            rst,
-            clk0,
-	    clk180,
-	    clk270,
-	    clkdiv2,
-	    pll_lock,
-	    ARCHITECTURE="BEHAVIORAL"
-            ):
+   clk100,
+   rst,
+   clk0,
+   clk180,
+   clk270,
+   clkdiv2,
+   pll_lock,
+   ARCHITECTURE="BEHAVIORAL"
+):
 
    @always(clk100.posedge)
    def logic():

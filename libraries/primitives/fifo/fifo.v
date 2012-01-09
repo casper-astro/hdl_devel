@@ -4,7 +4,7 @@
 //                                                                            //
 //      Module name: fifo                                                     //
 //      Desc: parameterized fifo                                              //
-//      Date: Oct 2011                                                        //
+//      Date: Dec 2011                                                        //
 //      Developer: Wesley New                                                 //
 //      Licence: GNU General Public License ver 3                             //
 //      Notes: Uses the dual port BRAM module                                 //

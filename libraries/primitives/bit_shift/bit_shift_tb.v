@@ -5,7 +5,7 @@
 //      Module name: bit_shift_tb                                             //
 //      Desc: runs and tests the counter module, and provides and interface   //
 //            to test the module from Python (MyHDL)                          //
-//      Date: Oct 2011                                                        //
+//      Date: Nov 2011                                                        //
 //      Developer: Wesley New                                                 //
 //      Licence: GNU General Public License ver 3                             //
 //      Notes: This only tests the basic functionality of the module, more    //
