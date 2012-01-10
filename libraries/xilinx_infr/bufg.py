@@ -1,10 +1,15 @@
 #==============================================================================#
 #                                                                              #
-#      ibufg wrapper and simulation model                                      #
+#      bufg wrapper and simulation model                                       #
 #                                                                              #
-#      Module name: ibufg_wrapper                                              #
-#      Desc: wraps the xilinx ibufg in Python and provides a model for         #
+#      Module name: bufg_wrapper                                               #
+#      Desc: wraps the xilinx bufg in Python and provides a model for          #
 #            simulation                                                        #
+#            BUFG: This design element is a high-fanout buffer that connects   #
+#                  signals to the global routing resources for low skew        #
+#                  distribution of the signal. BUFGs are typically used on     #
+#                  clock nets as well other high fanout nets like sets/resets  #
+#                  and clock enables.                                          #
 #      Date: Dec 2011                                                          #
 #      Developer: Wesley New                                                   #
 #      Licence: GNU General Public License ver 3                               #
@@ -14,18 +19,12 @@
 
 from myhdl import *
 
-def ibufg_wrapper (block_name,
+def bufg_wrapper (block_name,
       #========
       # Ports
       #========
       i, # input
       o, # output
-  
-      #=============
-      # Parameters
-      #=============
-      IBUF_LOW_PWR = "TRUE",    # Low power (TRUE) vs. performance (FALSE) setting for refernced I/O standards 
-      IOSTANDARD   = "LVDS_25"  # Specify the input I/O standard
    ):
 
    #===================
@@ -36,15 +35,13 @@ def ibufg_wrapper (block_name,
       o.next = i
 
    #======================
-   # IBUFG Instantiation
+   # BUFG Instantiation
    #======================
    __verilog__ = \
    """
-   IBUFG
+   BUFG
    #(
-      .IBUF_LOW_PWR (%(IBUF_LOW_PWR)s),
-      .IOSTANDARD   (%(IOSTANDARD)s)
-   ) IBUFG_%(block_name)s (
+   ) BUFG_%(block_name)s (
       .I  (%(i)s),
       .O  (%(o)s)
    );
@@ -61,7 +58,7 @@ def ibufg_wrapper (block_name,
 #=======================================
 def convert():
    i, o = [Signal(bool(0)) for i in range(2)]
-   toVerilog(ibufg_wrapper, "buf", i, o)
+   toVerilog(bufg_wrapper, "buf", i, o)
 
 if __name__ == "__main__":
    convert()

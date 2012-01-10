@@ -1,10 +1,17 @@
 #==============================================================================#
 #                                                                              #
-#      ibufg wrapper and simulation model                                      #
+#      obufds wrapper and simulation model                                     #
 #                                                                              #
-#      Module name: ibufg_wrapper                                              #
-#      Desc: wraps the xilinx ibufg in Python and provides a model for         #
+#      Module name: obufds_wrapper                                             #
+#      Desc: wraps the xilinx obufds in Python and provides a model for        #
 #            simulation                                                        #
+#            OBUGDS:This design element is a single output buffer that         #
+#            supports low-voltage, differential signaling (1.8 v CMOS).        #
+#            OBUFDS isolates the internal circuit and provides drive current   #
+#            for signals leaving the chip. Its output is represented as two    #
+#            distinct ports (O and OB), one deemed the "master" and the other  #
+#            the "slave." The master and the slave are opposite phases of the  #
+#            same logical signal (for example, MYNET and MYNETB).              #
 #      Date: Dec 2011                                                          #
 #      Developer: Wesley New                                                   #
 #      Licence: GNU General Public License ver 3                               #
@@ -14,18 +21,18 @@
 
 from myhdl import *
 
-def ibufg_wrapper (block_name,
+def obufds_wrapper (block_name,
       #========
       # Ports
       #========
-      i, # input
-      o, # output
-  
+      i,
+      o,
+      ob,
+      
       #=============
       # Parameters
       #=============
-      IBUF_LOW_PWR = "TRUE",    # Low power (TRUE) vs. performance (FALSE) setting for refernced I/O standards 
-      IOSTANDARD   = "LVDS_25"  # Specify the input I/O standard
+      IOSTANDARD="LVDS_25"
    ):
 
    #===================
@@ -34,24 +41,27 @@ def ibufg_wrapper (block_name,
    @always(i.posedge and i.negedge)
    def logic():
       o.next = i
+      ob.next = i
 
-   #======================
-   # IBUFG Instantiation
-   #======================
+
+   #========================
+   # IBUFDS Instantiation
+   #========================
    __verilog__ = \
    """
-   IBUFG
+   OBUFDS
    #(
-      .IBUF_LOW_PWR (%(IBUF_LOW_PWR)s),
-      .IOSTANDARD   (%(IOSTANDARD)s)
-   ) IBUFG_%(block_name)s (
+      .IOSTANDARD (%(IOSTANDARD)s)
+   ) OBUFDS_%(block_name)s (
       .I  (%(i)s),
-      .O  (%(o)s)
+      .O  (%(o)s),
+      .OB (%(ob)s)
    );
    """
 
    # removes warning when converting to hdl
-   o.driven = "wire"
+   o.driven  = "wire"
+   ob.driven = "wire"
 
    return logic
 
@@ -60,8 +70,8 @@ def ibufg_wrapper (block_name,
 # For testing of conversion to verilog
 #=======================================
 def convert():
-   i, o = [Signal(bool(0)) for i in range(2)]
-   toVerilog(ibufg_wrapper, "buf", i, o)
+   i, o, ob = [Signal(bool(0)) for i in range(3)]
+   toVerilog(obufds_wrapper, "buf", i, o, ob)
 
 if __name__ == "__main__":
    convert()
