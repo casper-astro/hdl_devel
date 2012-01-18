@@ -62,12 +62,12 @@ module bram_sync_sp #(
 
          "VIRTEX5" :
          begin
-            // Instantiate V5 counter primitive
+            // Instantiate V5 primitive
          end
 
          "VIRTEX6" :
          begin
-            // Instantiate V6 counter primitive
+            // Instantiate V6 primitive
          end
 
          default :

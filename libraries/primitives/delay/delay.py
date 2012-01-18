@@ -20,27 +20,28 @@ def delay_wrapper(block_name,
       else:
          out = COUNT_FROM
 
-   __verilog__ = \
-   """
-   delay 
-   #(
-      .ARCHITECTURE ("%(ARCHITECTURE)s"),
-      .DATA_WIDTH   (%(DATA_WIDTH)s),
-      .COUNT_FROM   (%(COUNT_FROM)s),
-      .COUNT_TO     (%(COUNT_TO)s),
-      .STEP         (%(STEP)s)
-   ) counter_%(block_name)s (
-      .clk  (%(clk)s),
-      .en   (%(en)s),
-      .rst  (%(rst)s),
-      .out  (%(out)s)
-   );
-   """
 
    out.driven = "wire"
 
    return logic
 
+   
+delay_wrapper.verilog_code = \
+"""
+delay 
+#(
+   .ARCHITECTURE ("$ARCHITECTURE"),
+   .DATA_WIDTH   ($DATA_WIDTH),
+   .COUNT_FROM   ($COUNT_FROM),
+   .COUNT_TO     ($COUNT_TO),
+   .STEP         ($STEP)
+) counter_$block_name (
+   .clk  ($clk),
+   .en   ($en),
+   .rst  ($rst),
+   .out  ($out)
+);
+"""
 
 def convert():
 

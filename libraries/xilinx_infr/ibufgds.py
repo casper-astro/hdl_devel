@@ -48,27 +48,27 @@ def ibufgds_wrapper (block_name,
       o.next = i
 
 
-   #========================
-   # IBUFGDS Instantiation
-   #========================
-   __verilog__ = \
-   """
-   IBUFGDS
-   #(
-      .DIFF_TERM    (%(DIFF_TERM)s),
-      .IBUF_LOW_PWR (%(IBUF_LOW_PWR)s),
-      .IOSTANDARD   (%(IOSTANDARD)s)
-   ) IBUFGDS_%(block_name)s (
-      .I  (%(i)s),
-      .IB (%(ib)s),
-      .O  (%(o)s)
-   );
-   """
-
    # removes warning when converting to hdl
    o.driven  = "wire"
 
    return logic
+
+#========================
+# IBUFGDS Instantiation
+#========================
+ibufgds_wrapper.verilog_code = \
+"""
+IBUFGDS
+#(
+   .DIFF_TERM    ($DIFF_TERM),
+   .IBUF_LOW_PWR ($IBUF_LOW_PWR),
+   .IOSTANDARD   ($IOSTANDARD)
+) IBUFGDS_$block_name (
+   .I  ($i),
+   .IB ($ib),
+   .O  ($o)
+);
+"""
 
 
 #=======================================

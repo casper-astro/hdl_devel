@@ -35,25 +35,26 @@ def ibufg_wrapper (block_name,
    def logic():
       o.next = i
 
-   #======================
-   # IBUFG Instantiation
-   #======================
-   __verilog__ = \
-   """
-   IBUFG
-   #(
-      .IBUF_LOW_PWR (%(IBUF_LOW_PWR)s),
-      .IOSTANDARD   (%(IOSTANDARD)s)
-   ) IBUFG_%(block_name)s (
-      .I  (%(i)s),
-      .O  (%(o)s)
-   );
-   """
 
    # removes warning when converting to hdl
    o.driven = "wire"
 
    return logic
+
+#======================
+# IBUFG Instantiation
+#======================
+ibufg_wrapper.verilog_code = \
+"""
+IBUFG
+#(
+   .IBUF_LOW_PWR ($IBUF_LOW_PWR),
+   .IOSTANDARD   ($IOSTANDARD)
+) IBUFG_$block_name (
+   .I  ($i),
+   .O  ($o)
+);
+"""
 
 
 #=======================================

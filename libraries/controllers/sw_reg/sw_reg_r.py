@@ -60,37 +60,6 @@ def sw_reg_r_wrapper(block_name,
       else:
          out = COUNT_FROM
 
-   #========================
-   # Counter Instantiation
-   #========================
-   __verilog__ = \
-   """
-   sw_reg_r
-   #(
-      .C_BASEADDR      (%(C_BASEADDR)s), 
-      .C_HIGHADDR      (%(C_HIGHADDR)s), 
-      .C_WB_DATA_WIDTH (%(C_WB_DATA_WIDTH)s), 
-      .C_WB_ADDR_WIDTH (%(C_WB_ADDR_WIDTH)s), 
-      .C_BYTE_EN_WIDTH (%(C_BYTE_EN_WIDTH)s)  
-   ) sw_reg_r_%(block_name)s (
-     
-      .fabric_clk     (%(fabric_clk)s),
-      .fabric_data_in (%(fabric_data_in)s),
-                                       
-      .wb_clk_i       (%(wb_clk_i)s),
-      .wb_rst_i       (%(wb_rst_i)s),
-      .wb_cyc_i       (%(wb_cyc_i)s),
-      .wb_stb_i       (%(wb_stb_i)s),
-      .wb_we_i        (%(wb_we_i)s),
-      .wb_sel_i       (%(wb_sel_i)s),
-      .wb_adr_i       (%(wb_adr_i)s),
-      .wb_dat_i       (%(wb_dat_i)s),
-                                       
-      .wb_dat_o       (%(wb_dat_o)s),
-      .wb_ack_o       (%(wb_ack_o)s),
-      .wb_err_o       (%(wb_err_o)s)
-   );
-   """
 
    # removes warning when converting to hdl
    fabric_data_in.driven = "wire"
@@ -99,6 +68,39 @@ def sw_reg_r_wrapper(block_name,
    wb_err_o.driven = "wire"
 
    return logic
+
+
+#=====================================
+# Software Reg Verilog Instantiation
+#=====================================
+sw_reg_r_wrapper.verilog_code = \
+"""
+sw_reg_r
+#(
+   .C_BASEADDR      ($C_BASEADDR), 
+   .C_HIGHADDR      ($C_HIGHADDR), 
+   .C_WB_DATA_WIDTH ($C_WB_DATA_WIDTH), 
+   .C_WB_ADDR_WIDTH ($C_WB_ADDR_WIDTH), 
+   .C_BYTE_EN_WIDTH ($C_BYTE_EN_WIDTH)  
+) sw_reg_r_$block_name (
+  
+   .fabric_clk     ($fabric_clk),
+   .fabric_data_in ($fabric_data_in),
+                                    
+   .wb_clk_i       ($wb_clk_i),
+   .wb_rst_i       ($wb_rst_i),
+   .wb_cyc_i       ($wb_cyc_i),
+   .wb_stb_i       ($wb_stb_i),
+   .wb_we_i        ($wb_we_i),
+   .wb_sel_i       ($wb_sel_i),
+   .wb_adr_i       ($wb_adr_i),
+   .wb_dat_i       ($wb_dat_i),
+                                    
+   .wb_dat_o       ($wb_dat_o),
+   .wb_ack_o       ($wb_ack_o),
+   .wb_err_o       ($wb_err_o)
+);
+"""
 
 
 #=======================================

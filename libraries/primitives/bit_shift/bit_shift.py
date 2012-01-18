@@ -41,26 +41,37 @@ def bit_shift_wrapper(block_name,
       else:
          data_out.next = (data_in[:]*2**NUMBER_OF_BITS)
 
-   #==========================
-   # Bit Shift Instantiation
-   #==========================
-   __verilog__ = \
-   """
-   bit_shift
-   #(
-      .ARCHITECTURE      (%(ARCHITECTURE)s),
-      .INPUT_DATA_WIDTH  (%(INPUT_DATA_WIDTH)s),
-      .SHIFT_DIRECTION   (%(SHIFT_DIRECTION)s),
-      .NUMBER_OF_BITS    (%(NUMBER_OF_BITS)s),
-      .WRAP              (%(WRAP)s)
-   ) bit_shift_%(block_name)s (
-      .clk      (%(clk)s),
-      .data_in  (%(data_in)s),
-      .data_out (%(data_out)s)
-   );
-   """
 
    return logic
+
+
+#==================================
+# Bit Shift Verilog Instantiation
+#==================================
+bit_shift_wrapper.verilog_code = \
+"""
+bit_shift
+#(
+   .ARCHITECTURE      ($ARCHITECTURE),
+   .INPUT_DATA_WIDTH  ($INPUT_DATA_WIDTH),
+   .SHIFT_DIRECTION   ($SHIFT_DIRECTION),
+   .NUMBER_OF_BITS    ($NUMBER_OF_BITS),
+   .WRAP              ($WRAP)
+) bit_shift_$block_name (
+   .clk      ($clk),
+   .data_in  ($data_in),
+   .data_out ($data_out)
+);
+"""
+
+#======================================= 
+# For testing of conversion to verilog 
+#======================================= 
+def convert(): 
+ 
+   clk, data_in, data_out = [Signal(bool(0)) for i in range(3)] 
+     
+   toVerilog(bit_shift_wrapper, block_name="inst", clk=clk, data_in=data_in, data_out=data_out) 
 
 
 if __name__ == "__main__":

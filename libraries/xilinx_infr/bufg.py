@@ -34,24 +34,24 @@ def bufg_wrapper (block_name,
    def logic():
       o.next = i
 
-   #======================
-   # BUFG Instantiation
-   #======================
-   __verilog__ = \
-   """
-   BUFG
-   #(
-   ) BUFG_%(block_name)s (
-      .I  (%(i)s),
-      .O  (%(o)s)
-   );
-   """
 
    # removes warning when converting to hdl
    o.driven = "wire"
 
    return logic
 
+#======================
+# BUFG Instantiation
+#======================
+bufg_wrapper.verilog_code = \
+"""
+BUFG
+#(
+) BUFG_$block_name (
+   .I  ($i),
+   .O  ($o)
+);
+"""
 
 #=======================================
 # For testing of conversion to verilog

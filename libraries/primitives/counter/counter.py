@@ -35,6 +35,7 @@ def counter_wrapper(block_name,
    #===================
    # Simulation Logic
    #===================
+   
    @always(clk.posedge)
    def logic():
       if (rst == 0 and out < COUNT_TO):
@@ -43,30 +44,30 @@ def counter_wrapper(block_name,
       else:
          out = COUNT_FROM
 
-   #========================
-   # Counter Instantiation
-   #========================
-   __verilog__ = \
-   """
-   counter 
-   #(
-      .ARCHITECTURE ("%(ARCHITECTURE)s"),
-      .DATA_WIDTH   (%(DATA_WIDTH)s),
-      .COUNT_FROM   (%(COUNT_FROM)s),
-      .COUNT_TO     (%(COUNT_TO)s),
-      .STEP         (%(STEP)s)
-   ) counter_%(block_name)s (
-      .clk  (%(clk)s),
-      .en   (%(en)s),
-      .rst  (%(rst)s),
-      .out  (%(out)s)
-   );
-   """
-
    # removes warning when converting to hdl
-   out.driven = "wire"
+   #out.driven = "wire"
 
    return logic
+
+#========================
+# Counter Instantiation
+#========================
+counter_wrapper.verilog_code = \
+"""
+counter 
+#(
+   .ARCHITECTURE ("$ARCHITECTURE"),
+   .DATA_WIDTH   ($DATA_WIDTH),
+   .COUNT_FROM   ($COUNT_FROM),
+   .COUNT_TO     ($COUNT_TO),
+   .STEP         ($STEP)
+) counter_$block_name (
+   .clk  ($clk),
+   .en   ($en),
+   .rst  ($rst),
+   .out  ($out)
+);
+"""
 
 
 #=======================================

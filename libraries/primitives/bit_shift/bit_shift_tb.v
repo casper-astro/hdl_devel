@@ -3,7 +3,7 @@
 //      Bit shift test bench                                                  //
 //                                                                            //
 //      Module name: bit_shift_tb                                             //
-//      Desc: runs and tests the counter module, and provides and interface   //
+//      Desc: runs and tests the bit shift module, and provides and interface //
 //            to test the module from Python (MyHDL)                          //
 //      Date: Nov 2011                                                        //
 //      Developer: Wesley New                                                 //

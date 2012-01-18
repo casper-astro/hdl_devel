@@ -41,30 +41,32 @@ def slice_wrapper(block_name,
       else:
          data_out.next = data_in[OFFSET_1:OFFSET_2]
 
-   #======================
-   # Slice Instantiation
-   #======================
-   __verilog__ = \
-   """
-   slice 
-   #(
-      .ARCHITECTURE      (%(ARCHITECTURE)s),
-      .INPUT_DATA_WIDTH  (%(INPUT_DATA_WIDTH)s),
-      .OFFSET_REL_TO_MSB (%(OFFSET_REL_TO_MSB)s),
-      .OFFSET_1          (%(OFFSET_1)s),
-      .OFFSET_2          (%(OFFSET_2)s)
-   ) slice_%(block_name)s (
-      .clk      (%(clk)s),
-      .data_in  (%(data_in)s),
-      .data_out (%(data_out)s)
-   );
-   """
 
    # removes warning when converting to hdl
    data_in.driven = "wire"
    data_out.driven = "wire"
 
    return logic
+   
+
+#==============================
+# Slice Verilog Instantiation
+#==============================
+slice_wrapper.verilog_code = \
+"""
+slice 
+#(
+   .ARCHITECTURE      ($ARCHITECTURE),
+   .INPUT_DATA_WIDTH  ($INPUT_DATA_WIDTH),
+   .OFFSET_REL_TO_MSB ($OFFSET_REL_TO_MSB),
+   .OFFSET_1          ($OFFSET_1),
+   .OFFSET_2          ($OFFSET_2)
+) slice_$block_name (
+   .clk      ($clk),
+   .data_in  ($data_in),
+   .data_out ($data_out)
+);
+"""
 
 #=======================================
 # For testing of conversion to verilog

@@ -1,9 +1,9 @@
 #==============================================================================#
 #                                                                              # 
-#      BRAM single port wrapper and simulation model                           # 
+#      BRAM dual port wrapper and simulation model                             # 
 #                                                                              # 
 #      Module name: bram_sp_wrapper                                            # 
-#      Desc: wraps the verilog bram_sp and provides a model for simulation     # 
+#      Desc: wraps the verilog bram_dp and provides a model for simulation     # 
 #      Date: Jan 2012                                                          # 
 #      Developer: Wesley New                                                   # 
 #      Licence: GNU General Public License ver 3                               # 
@@ -13,15 +13,20 @@
 
 from myhdl import *
 
-def bram_sync_sp_wrapper(block_name,
+def bram_sync_dp_wrapper(block_name,
       #========
       # Ports
       #========
-      clk,
-      wr,
-      addr,
-      data_in,
-      data_out,
+      a_clk,
+      a_wr,
+      a_addr,
+      a_data_in,
+      a_data_out,
+      b_clk,
+      b_wr,
+      b_addr,
+      b_data_in,
+      b_data_out,
 
       #=============
       # Parameters
@@ -31,40 +36,48 @@ def bram_sync_sp_wrapper(block_name,
       ADDR_WIDTH=4
    ):
 
-   #===================
+   #========================
    # TODO:Simulation Logic
-   #===================
-   @always(clk.posedge)
+   #========================
+   @always(a_clk.posedge)
    def logic():
-      if (rst == 0 and out < COUNT_TO):
-         if (en == 1):
-            out == out + STEP
-      else:
-         out = COUNT_FROM
+      #if (rst == 0 and a_data_out < COUNT_TO):
+      #   if (en == 1):
+      #      data_out == data_out + STEP
+      #else:
+      a_data_out = 0
 
-   #========================
-   # Counter Instantiation
-   #========================
-   __verilog__ = \
-   """
-   bram_sync_sp
-   #(
-      .ARCHITECTURE ("%(ARCHITECTURE)s"),
-      .DATA_WIDTH   (%(DATA_WIDTH)s),
-      .ADDR_WIDTH   (%(ADDR_WIDTH)s)
-   ) counter_%(block_name)s (
-      .clk      (%(clk)s),
-      .wr       (%(wr)s),
-      .addr     (%(addr)s),
-      .data_in  (%(data_in)s),
-      .data_out (%(data_out)s)
-   );
-   """
 
    # removes warning when converting to hdl
-   out.driven = "wire"
+   a_data_out.driven = "wire"
+   b_data_out.driven = "wire"
 
    return logic
+
+   
+#=============================
+# BRAM Verilog Instantiation
+#=============================
+bram_sync_dp_wrapper.verilog_code = \
+"""
+bram_sync_dp
+#(
+   .ARCHITECTURE ("$ARCHITECTURE"),
+   .DATA_WIDTH   ($DATA_WIDTH),
+   .ADDR_WIDTH   ($ADDR_WIDTH)
+) bram_sync_dp_$block_name (
+   .a_clk      ($a_clk),
+   .a_wr       ($a_wr),
+   .a_addr     ($a_addr),
+   .a_data_in  ($a_data_in),
+   .a_data_out ($a_data_out)
+   .b_clk      ($b_clk),
+   .b_wr       ($b_wr),
+   .b_addr     ($b_addr),
+   .b_data_in  ($b_data_in),
+   .b_data_out ($b_data_out)
+);
+"""
 
 
 #=======================================
@@ -72,9 +85,9 @@ def bram_sync_sp_wrapper(block_name,
 #=======================================
 def convert():
 
-   clk, en, rst, out = [Signal(bool(0)) for i in range(4)]
+   a_clk, a_wr, a_addr, a_data_in, a_data_out, b_clk, b_wr, b_addr, b_data_in, b_data_out = [Signal(bool(0)) for i in range(10)]
 
-   toVerilog(counter_wrapper, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
+   toVerilog(bram_sync_dp_wrapper, block_name="inst", a_clk=a_clk, a_wr=a_wr, a_addr=a_addr, a_data_in=a_data_in, a_data_out=a_data_out, b_clk=b_clk, b_wr=b_wr, b_addr=b_addr, b_data_in=b_data_in, b_data_out=b_data_out)
 
 
 if __name__ == "__main__":

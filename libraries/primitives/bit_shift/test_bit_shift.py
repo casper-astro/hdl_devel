@@ -1,9 +1,9 @@
 #==============================================================================#
 #                                                                              # 
-#      Counter python testing                                                  # 
+#      Bit Shift python testing                                                # 
 #                                                                              # 
-#      Module name: test_counter                                               # 
-#      Desc: The MyHDL code that test the counter module using co-simulation   # 
+#      Module name: test_bit_shift                                             # 
+#      Desc: The MyHDL code that test the bit_shift module using co-simulation # 
 #      Date: Nov 2011                                                          # 
 #      Developer: Wesley New                                                   # 
 #      Licence: GNU General Public License ver 3                               # 

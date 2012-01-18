@@ -42,29 +42,31 @@ def iobuf_wrapper (block_name,
       o.next = i
       #TODO: get this logic correct
 
-   #======================
-   # IOBUF Instantiation
-   #======================
-   __verilog__ = \
-   """
-   IOBUF
-   #(
-      .DRIVE      (%(DRIVE)s),
-      .IOSTANDARD (%(IOSTANDARD)s),
-      .SLEW       (%(SLEW)s)
-
-   ) IOBUF_%(block_name)s (
-      .T  (%(t)s)
-      .I  (%(i)s),
-      .O  (%(o)s)
-      .IO (%(io)s)
-   );
-   """
 
    # removes warning when converting to hdl
    o.driven = "wire"
 
    return logic
+   
+
+#======================
+# IOBUF Instantiation
+#======================
+iobuf_wrapper.verilog_code = \
+"""
+IOBUF
+#(
+   .DRIVE      ($DRIVE),
+   .IOSTANDARD ($IOSTANDARD),
+   .SLEW       ($SLEW)
+
+) IOBUF_$block_name (
+   .T  ($t)
+   .I  ($i),
+   .O  ($o)
+   .IO ($io)
+);
+"""
 
 
 #=======================================

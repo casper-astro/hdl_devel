@@ -42,29 +42,30 @@ def bram_sync_sp_wrapper(block_name,
       else:
          out = COUNT_FROM
 
-   #========================
-   # Counter Instantiation
-   #========================
-   __verilog__ = \
-   """
-   bram_sync_sp
-   #(
-      .ARCHITECTURE ("%(ARCHITECTURE)s"),
-      .DATA_WIDTH   (%(DATA_WIDTH)s),
-      .ADDR_WIDTH   (%(ADDR_WIDTH)s)
-   ) counter_%(block_name)s (
-      .clk      (%(clk)s),
-      .wr       (%(wr)s),
-      .addr     (%(addr)s),
-      .data_in  (%(data_in)s),
-      .data_out (%(data_out)s)
-   );
-   """
-
    # removes warning when converting to hdl
    out.driven = "wire"
 
    return logic
+
+
+#=============================
+# BRAM Verilog Instantiation
+#=============================
+bram_sync_sp_wrapper.verilog_code = \
+"""
+bram_sync_sp
+#(
+   .ARCHITECTURE ("$ARCHITECTURE"),
+   .DATA_WIDTH   ($DATA_WIDTH),
+   .ADDR_WIDTH   ($ADDR_WIDTH)
+) bram_sync_sp_$block_name (
+   .clk      ($clk),
+   .wr       ($wr),
+   .addr     ($addr),
+   .data_in  ($data_in),
+   .data_out ($data_out)
+);
+"""
 
 
 #=======================================
@@ -72,9 +73,9 @@ def bram_sync_sp_wrapper(block_name,
 #=======================================
 def convert():
 
-   clk, en, rst, out = [Signal(bool(0)) for i in range(4)]
+   clk, wr, addr, data_in, data_out = [Signal(bool(0)) for i in range(5)]
 
-   toVerilog(counter_wrapper, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
+   toVerilog(bram_sync_sp_wrapper, block_name="inst", clk=clk, wr=wr, addr=addr, data_in=data_in, data_out=data_out)
 
 
 if __name__ == "__main__":

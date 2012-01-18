@@ -43,27 +43,27 @@ def obufds_wrapper (block_name,
       o.next = i
       ob.next = i
 
-
-   #========================
-   # IBUFDS Instantiation
-   #========================
-   __verilog__ = \
-   """
-   OBUFDS
-   #(
-      .IOSTANDARD (%(IOSTANDARD)s)
-   ) OBUFDS_%(block_name)s (
-      .I  (%(i)s),
-      .O  (%(o)s),
-      .OB (%(ob)s)
-   );
-   """
-
    # removes warning when converting to hdl
    o.driven  = "wire"
    ob.driven = "wire"
 
    return logic
+   
+
+#========================
+# OBUFDS Instantiation
+#========================
+obufds_wrapper.verilog_code = \
+"""
+OBUFDS
+#(
+   .IOSTANDARD ($IOSTANDARD)
+) OBUFDS_$block_name (
+   .I  ($i),
+   .O  ($o),
+   .OB ($ob)
+);
+"""
 
 
 #=======================================

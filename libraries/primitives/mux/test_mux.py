@@ -1,9 +1,9 @@
 #==============================================================================#
 #                                                                              # 
-#      Counter python testing                                                  # 
+#      Multiplexer python testing                                              # 
 #                                                                              # 
-#      Module name: test_counter                                               # 
-#      Desc: The MyHDL code that test the counter module using co-simulation   # 
+#      Module name: test_mux                                                   # 
+#      Desc: The MyHDL code that test the mux module using co-simulation       # 
 #      Date: Oct 2011                                                          # 
 #      Developer: Rurik Primiani & Wesley New                                  # 
 #      Licence: GNU General Public License ver 3                               # 
@@ -35,9 +35,9 @@ ICARUS_CMD = 'iverilog ' + \
 
 VVP_CMD = "vvp -m {vpi_path} {mod_path}mux_tb"
 
-#=============================
-# Call to the Counter Wrapper
-#=============================
+#==========================
+# Call to the mux wrapper
+#==========================
 def mux(select, data_in, data_out, 
             architecture, select_lines):
     print ICARUS_COMMAND
