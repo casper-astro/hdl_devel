@@ -12,8 +12,8 @@ module clk_gen #(
    );
    /********** Clock Generation ***********/
  
-   wire dcm_clk;
-   wire dcm_clk_lock;
+   wire mmcm_clk;
+   wire mmcm_clk_lock;
  
    localparam FX_MULT = CLK_FREQ == 150 ?  6 :
                         CLK_FREQ == 200 ?  8 :

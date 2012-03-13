@@ -19,10 +19,10 @@ module infrastructure(
    wire sys_clk_ds;
    wire fb_clk;
  
-   wire sys_clk0_dcm;
-   wire sys_clk180_dcm;
-   wire sys_clk270_dcm;
-   wire clk_200_dcm;
+   wire sys_clk0_mmcm;
+   wire sys_clk180_mmcm;
+   wire sys_clk270_mmcm;
+   wire clk_200_mmcm;
  
    wire clk_fb;
  
@@ -83,11 +83,11 @@ module infrastructure(
  
              .CLKOUT0   (),
              .CLKOUT0B  (),
-             .CLKOUT1   (sys_clk0_dcm),
-             .CLKOUT1B  (sys_clk180_dcm),
-             .CLKOUT2   (sys_clk270_dcm),
+             .CLKOUT1   (sys_clk0_mmcm),
+             .CLKOUT1B  (sys_clk180_mmcm),
+             .CLKOUT2   (sys_clk270_mmcm),
              .CLKOUT2B  (),
-             .CLKOUT3   (clk_200_dcm),
+             .CLKOUT3   (clk_200_mmcm),
              .CLKOUT3B  (),
              .CLKOUT4   (),
              .CLKOUT5   (),
@@ -101,7 +101,7 @@ module infrastructure(
  
  
             BUFG bufg_sysclk[3:0](
-              .I({sys_clk0_dcm, sys_clk180_dcm, sys_clk270_dcm, clk_200_dcm}),
+              .I({sys_clk0_mmcm, sys_clk180_mmcm, sys_clk270_mmcm, clk_200_mmcm}),
               .O({sys_clk0,     sys_clk180,     sys_clk270,     clk_200})
             );
    
