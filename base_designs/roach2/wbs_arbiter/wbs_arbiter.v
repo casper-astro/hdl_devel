@@ -11,7 +11,7 @@ module wbs_arbiter(
     wbs_ack_i
   );
   parameter ARCHITECTURE = "BEHAVIORAL";
-  parameter NUM_SLAVES = 14;
+  parameter NUM_SLAVES = 1;
   parameter SLAVE_ADDR = 0;
   parameter SLAVE_HIGH = 0;
   parameter TIMEOUT    = 10;

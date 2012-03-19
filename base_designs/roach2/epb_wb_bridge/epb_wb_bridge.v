@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
 
-module epb_wb_bridge_reg(
+module epb_wb_bridge(
     wb_clk_i, wb_rst_i,
     wb_cyc_o, wb_stb_o, wb_we_o, wb_sel_o,
     wb_adr_o, wb_dat_o, wb_dat_i,

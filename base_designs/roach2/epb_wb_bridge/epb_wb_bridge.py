@@ -27,7 +27,7 @@ def epb_wb_bridge_wrapper(block_name,
 
    __verilog__ = \
    """
-   epb_wb_bridge_reg
+   epb_wb_bridge
    #(
       .ARCHITECTURE ("%(ARCHITECTURE)s")
    ) epb_wb_bridge_%(block_name)s (

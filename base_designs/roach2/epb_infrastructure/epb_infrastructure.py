@@ -33,6 +33,8 @@ def epb_infrastructure_wrapper(block_name,
    );
    """
 
+   epb_clk.driven  = "wire"
+   
    return logic
 
 def convert():

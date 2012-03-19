@@ -24,11 +24,11 @@ def clk_infrastructure_wrapper(block_name,
    """
    clk_infrastructure 
    #(
-      .ARCHITECTURE  ("%(ARCHITECTURE)s"),
-      .CLK_FREQ      (%(CLK_FREQ)s)
+      .ARCHITECTURE     ("%(ARCHITECTURE)s"),
+      .CLK_FREQ         (%(CLK_FREQ)s)
    ) clk_infrustructure_%(block_name)s (
-      .sys_clk_n    (%(sys_clk_n)s),
-      .sys_clk_p    (%(sys_clk_p)s),
+      .sys_clk_n        (%(sys_clk_n)s),
+      .sys_clk_p        (%(sys_clk_p)s),
       .sys_clk          (%(sys_clk)s), 
       .sys_clk90        (%(sys_clk90)s), 
       .sys_clk180       (%(sys_clk180)s), 
