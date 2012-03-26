@@ -1,20 +1,20 @@
 module epb_infrastructure(
      epb_data_buf,
      epb_data_oe_n,
-     epb_data_in,
-     epb_data_out,
-     per_clk,
-     epb_clk
+     epb_data_i,
+     epb_data_o
+     //per_clk,
+     //epb_clk
    );
    
    parameter ARCHITECTURE = "VIRTEX6";
    
    inout  [0:31] epb_data_buf;
    input  epb_data_oe_n;
-   input  [0:31] epb_data_in;
-   output [0:31] epb_data_out;
-   input  per_clk;
-   output epb_clk;
+   input  [0:31] epb_data_i;
+   output [0:31] epb_data_o;
+   //input  per_clk;
+   //output epb_clk;
  
      // Generate according to implementation
    generate
@@ -35,16 +35,16 @@ module epb_infrastructure(
            IOBUF #(
              .IOSTANDARD("DEFAULT")
            ) iobuf_data [0:31] (
-             .O  (epb_data_out),
+             .O  (epb_data_o),
              .IO (epb_data_buf),
-             .I  (epb_data_in),
+             .I  (epb_data_i),
              .T  (epb_data_oe_n)
            );
          
-           BUFG bufg_perclk(
+           /*BUFG bufg_perclk(
              .I (per_clk),
              .O (epb_clk)
-           );
+           );*/
         end
     
    endcase

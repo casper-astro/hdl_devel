@@ -12,7 +12,7 @@ def reset_block_wrapper(block_name,
 
    @always(clk.posedge)
    def logic():
-      rst_o = rst_i
+      pass
 
    __verilog__ = \
    """
@@ -29,8 +29,6 @@ def reset_block_wrapper(block_name,
    );
    """
 
-   clk.driven  = "wire"
-   rst_i.driven = "wire"
    rst_o.driven = "wire"
 
    return logic

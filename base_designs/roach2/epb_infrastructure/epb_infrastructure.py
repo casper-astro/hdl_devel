@@ -1,22 +1,18 @@
 from myhdl import *
 
 def epb_infrastructure_wrapper(block_name,
-			       epb_data_buf,
-                               epb_data_oe_n,
-                               epb_data_in,
-                               epb_data_out,
-                               per_clk,
-                               epb_clk,
-			       ARCHITECTURE="VIRTEX6"
-                               ):
+      epb_data_buf,
+      epb_data_oe_n,
+      epb_data_i,
+      epb_data_o,
+      #per_clk,
+      #epb_clk,
+      ARCHITECTURE="VIRTEX6"
+   ):
 
-   @always(epb_clk.posedge)
+   @always(epb_data_i.posedge)
    def logic():
-      if (rst == 0 and out < COUNT_TO):
-         if (en == 1):
-            out == out + STEP
-      else:
-         out = COUNT_FROM
+      pass
 
    __verilog__ = \
    """
@@ -26,22 +22,21 @@ def epb_infrastructure_wrapper(block_name,
    ) epb_infrastructure_%(block_name)s (
       .epb_data_buf  (%(epb_data_buf)s),
       .epb_data_oe_n (%(epb_data_oe_n)s),
-      .epb_data_in   (%(epb_data_in)s),
-      .epb_data_out  (%(epb_data_out)s),
-      .per_clk       (%(per_clk)s),
-      .epb_clk       (%(epb_clk)s)
+      .epb_data_i    (%(epb_data_i)s),
+      .epb_data_o    (%(epb_data_o)s)
    );
    """
 
-   epb_clk.driven  = "wire"
+   #epb_data_o.driven = "wire"
    
    return logic
 
 def convert():
 
-   epb_data_buf, epb_data_oe_n, epb_data_in, epb_data_out, per_clk, epb_clk = [Signal(bool(0)) for i in range(6)]
+   epb_data_buf = TristateSignal(bool(0))
+   epb_data_oe_n, epb_data_i, epb_data_o, per_clk, epb_clk = [Signal(bool(0)) for i in range(5)]
 
-   toVerilog(epb_infrastructure_wrapper, block_name="cntr2", epb_data_buf=epb_data_buf, epb_data_oe_n=epb_data_oe_n, epb_data_in=epb_data_in, epb_data_out=epb_data_out, per_clk=per_clk, epb_clk=epb_clk)
+   toVerilog(epb_infrastructure_wrapper, block_name="inst", epb_data_buf=epb_data_buf, epb_data_oe_n=epb_data_oe_n, epb_data_i=epb_data_i, epb_data_o=epb_data_o, per_clk=per_clk, epb_clk=epb_clk)
 
 
 if __name__ == "__main__":

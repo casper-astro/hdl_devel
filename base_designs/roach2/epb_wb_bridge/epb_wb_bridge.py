@@ -46,7 +46,23 @@ def epb_wb_bridge_wrapper(block_name,
    );
    """
 
+   wb_cyc_o.driven  = "wire"
+   wb_stb_o.driven  = "wire"
+   wb_we_o.driven   = "wire"
+   wb_sel_o.driven  = "wire"
+   wb_adr_o.driven  = "wire"
+   wb_dat_o.driven  = "wire"
+
+   epb_data_o.driven    = "wire"
+   epb_data_oe_n.driven = "wire"
+   epb_rdy.driven       = "wire"
+   epb_doen.driven      = "wire"
+
    return logic
+
+
+
+
 def convert():
 
     wb_clk_i, wb_rst_i, wb_cyc_o, wb_stb_o, wb_we_o, wb_sel_o, wb_adr_o, wb_dat_o, wb_dat_i, wb_ack_i, wb_err_i, epb_clk, epb_cs_n, epb_oe_n, epb_r_w_n, epb_be_n, epb_addr, epb_data_i, epb_data_o, epb_data_oe_n, epb_rdy, epb_doen = [Signal(bool(0))for i in range(22)]
@@ -54,6 +70,7 @@ def convert():
     ARCHITECTURE="BEHAVIORAL"
 
     toVerilog(epb_wb_bridge_wrapper, 
+    "inst",
     wb_clk_i, wb_rst_i,
     wb_cyc_o, wb_stb_o, wb_we_o, wb_sel_o,
     wb_adr_o, wb_dat_o, wb_dat_i,
@@ -65,8 +82,7 @@ def convert():
     epb_data_i, epb_data_o,
     epb_data_oe_n,
     epb_rdy,
-    epb_doen,
-    ARCHITECTURE)
+    epb_doen)
 
 
 

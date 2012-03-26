@@ -13,10 +13,10 @@ def wbs_arbiter_wrapper(block_name,
    wbs_ack_i,
 
    ARCHITECTURE="BEHAVIOURAL",
-   NUM_SLAVES=10,
-   SLAVE_ADDR=100,
-   SLAVE_HIGH=150,
-   TIMEOUT=10
+   NUM_SLAVES=1,
+   SLAVE_ADDR=0,
+   SLAVE_HIGH=65535,
+   TIMEOUT=1024
    ):
 
    @always(wb_clk_i.posedge)
@@ -46,6 +46,16 @@ def wbs_arbiter_wrapper(block_name,
    );
    """
 
+   wbm_dat_o.driven = "wire"
+   wbm_ack_o.driven = "wire"
+   wbm_err_o.driven = "wire"
+   wbs_cyc_o.driven = "wire"
+   wbs_stb_o.driven = "wire"
+   wbs_we_o.driven  = "wire"
+   wbs_sel_o.driven = "wire"
+   wbs_adr_o.driven = "wire"
+   wbs_dat_o.driven = "wire"
+   
    return logic
 
 def convert():
