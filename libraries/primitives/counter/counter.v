@@ -12,15 +12,6 @@
 //============================================================================//
 
 module counter #(
-      //================================
-      // Diagram positioning parameters
-      //================================
-      parameter BLOCK_NAME = "counter", // hierarchical block name
-      parameter X  = 0,                 // x location within sub-block
-      parameter Y  = 0,                 // y location within sub-block
-      parameter DX = 0,                 // x length
-      parameter DY = 0,                 // y lenghth
-      
       //==============================
       // Top level block parameters
       //==============================

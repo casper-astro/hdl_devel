@@ -15,7 +15,6 @@ module fifo #(
       //=======================
       //   fifo parameters
       //=======================
-      
       parameter DATA_WIDTH = 16;
       parameter FIFO_DEPTH = 1024;
       parameter ADDR_BITS  = 10;
