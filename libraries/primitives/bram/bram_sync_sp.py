@@ -1,11 +1,11 @@
 #==============================================================================#
 #                                                                              # 
-#      Counter wrapper and simulation model                                    # 
+#      BRAM single port wrapper and simulation model                           # 
 #                                                                              # 
-#      Module name: counter_wrapper                                            # 
-#      Desc: wraps the verilog counter and provides a model for simulation     # 
-#      Date: Oct 2011                                                          # 
-#      Developer: Rurik Primiani & Wesley New                                  # 
+#      Module name: bram_sp_wrapper                                            # 
+#      Desc: wraps the verilog bram_sp and provides a model for simulation     # 
+#      Date: Jan 2012                                                          # 
+#      Developer: Wesley New                                                   # 
 #      Licence: GNU General Public License ver 3                               # 
 #      Notes:                                                                  # 
 #                                                                              # 
@@ -13,29 +13,27 @@
 
 from myhdl import *
 
-def counter_wrapper(block_name,
+def bram_sync_sp_wrapper(block_name,
       #========
       # Ports
       #========
       clk,
-      en,
-      rst,
-      out,
+      wr,
+      addr,
+      data_in,
+      data_out,
 
       #=============
       # Parameters
       #=============
-      ARCHITECTURE = "BEHAVIORAL",
-      DATA_WIDTH   = 8,
-      COUNT_FROM   = 0,
-      COUNT_TO     = 256,  # should be 2^(DATAWIDTH-1)
-      STEP         = 1
+      ARCHITECTURE="BEHAVIORAL",
+      DATA_WIDTH=32,
+      ADDR_WIDTH=4
    ):
 
    #===================
-   # Simulation Logic
+   # TODO:Simulation Logic
    #===================
-   
    @always(clk.posedge)
    def logic():
       if (rst == 0 and out < COUNT_TO):
@@ -45,27 +43,27 @@ def counter_wrapper(block_name,
          out = COUNT_FROM
 
    # removes warning when converting to hdl
-   #out.driven = "wire"
+   out.driven = "wire"
 
    return logic
 
-#========================
-# Counter Instantiation
-#========================
-counter_wrapper.verilog_code = \
+
+#=============================
+# BRAM Verilog Instantiation
+#=============================
+bram_sync_sp_wrapper.verilog_code = \
 """
-counter 
+bram_sync_sp
 #(
    .ARCHITECTURE ("$ARCHITECTURE"),
    .DATA_WIDTH   ($DATA_WIDTH),
-   .COUNT_FROM   ($COUNT_FROM),
-   .COUNT_TO     ($COUNT_TO),
-   .STEP         ($STEP)
-) counter_$block_name (
-   .clk  ($clk),
-   .en   ($en),
-   .rst  ($rst),
-   .out  ($out)
+   .ADDR_WIDTH   ($ADDR_WIDTH)
+) bram_sync_sp_$block_name (
+   .clk      ($clk),
+   .wr       ($wr),
+   .addr     ($addr),
+   .data_in  ($data_in),
+   .data_out ($data_out)
 );
 """
 
@@ -75,9 +73,9 @@ counter
 #=======================================
 def convert():
 
-   clk, en, rst, out = [Signal(bool(0)) for i in range(4)]
+   clk, wr, addr, data_in, data_out = [Signal(bool(0)) for i in range(5)]
 
-   toVerilog(counter_wrapper, block_name="cntr2", clk=clk, en=en, rst=rst, out=out)
+   toVerilog(bram_sync_sp_wrapper, block_name="inst", clk=clk, wr=wr, addr=addr, data_in=data_in, data_out=data_out)
 
 
 if __name__ == "__main__":
